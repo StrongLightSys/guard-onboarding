@@ -1,8 +1,96 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Security Guard Onboarding</title>
-<style>body{font-family:Arial;text-align:center;padding-top:80px;background:#f4f6f9}h2{margin-bottom:40px}.flags{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}.flag{cursor:pointer;transition:transform .2s}.flag:hover{transform:scale(1.1)}.flag img{width:80px;border-radius:8px;box-shadow:0 4px 10px rgba(0,0,0,0.15)}.label{margin-top:8px;font-weight:bold}</style></head>
-<body><h2>Please select your language / בחר שפה / Выберите язык</h2>
-<div class="flags">
-<div class="flag" onclick="location.href='https://forms.gle/C1Ew8aQCHcwWWZ2m7'"><img src="https://flagcdn.com/w320/us.png" alt="English"><div class="label">English</div></div>
-<div class="flag" onclick="location.href='https://forms.gle/BeRRBXhdpA2S6dPP6'"><img src="https://flagcdn.com/w320/il.png" alt="עברית"><div class="label">עברית</div></div>
-<div class="flag" onclick="location.href='https://forms.gle/k9hcw7PuGEACabgU7'"><img src="https://flagcdn.com/w320/ru.png" alt="Русский"><div class="label">Русский</div></div>
-</div></body></html>
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרשמת מאבטח</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 2.5rem 1.5rem;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .heading {
+            margin-bottom: 2rem;
+        }
+        .heading .main {
+            display: block;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .heading .sub {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 0.9rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .lang-btn:hover { background: #1d4ed8; }
+        .lang-btn img {
+            width: 36px;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .footer {
+            margin-top: 2rem;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="heading">
+            <span class="main">בחירת שפה</span>
+            <span class="sub">Select Language / Выберите язык</span>
+        </div>
+        <div class="btn-group">
+            <a class="lang-btn" href="https://forms.gle/C1Ew8aQCHcwWWZ2m7" target="_blank">
+                <img src="https://flagcdn.com/w320/us.png" alt=""> English
+            </a>
+            <a class="lang-btn" href="https://forms.gle/BeRRBXhdpA2S6dPP6" target="_blank">
+                <img src="https://flagcdn.com/w320/il.png" alt=""> עברית
+            </a>
+            <a class="lang-btn" href="https://forms.gle/k9hcw7PuGEACabgU7" target="_blank">
+                <img src="https://flagcdn.com/w320/ru.png" alt=""> Русский
+            </a>
+        </div>
+        <div class="footer">טופס מאובטח | זמן מילוי משוער: 3–4 דקות</div>
+    </div>
+</body>
+</html>
