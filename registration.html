@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרשמת מאבטח</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --primary: #3b82f6;
+            --primary-light: rgba(59, 130, 246, 0.2);
+            --radius: 20px;
+            --blur: 24px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { width: 100%; max-width: 680px; }
+        header {
+            background: var(--surface);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        header h1 { font-size: 1.5rem; font-weight: 600; color: white; letter-spacing: -0.3px; }
+        header .meta { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.2rem; }
+        .lang-selector {
+            display: flex;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 4px;
+            backdrop-filter: blur(var(--blur));
+        }
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.2px;
+        }
+        .lang-btn.active { background: var(--primary); color: white; }
+        .lang-btn:hover:not(.active) { color: white; }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text);
+            letter-spacing: -0.2px;
+        }
+        .input-group { position: relative; margin-bottom: 1.2rem; }
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            background: var(--surface);
+            backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.2rem 1rem 0.6rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            outline: none;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .input-group textarea {
+            min-height: 80px;
+            resize: none;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) var(--surface);
+        }
+        .input-group textarea::-webkit-scrollbar { width: 6px; }
+        .input-group textarea::-webkit-scrollbar-track { background: var(--surface); border-radius: 10px; }
+        .input-group textarea::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        .input-group label {
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: all 0.2s;
+            pointer-events: none;
+            font-weight: 400;
+        }
+        .input-group textarea ~ label { top: 1rem; transform: none; }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label,
+        .input-group textarea:focus ~ label,
+        .input-group textarea:not(:placeholder-shown) ~ label {
+            top: 0.4rem;
+            font-size: 0.7rem;
+            color: var(--primary);
+            transform: none;
+        }
+        .file-drop-zone {
+            background: var(--surface);
+            backdrop-filter: blur(var(--blur));
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        .file-drop-zone:hover,
+        .file-drop-zone.drag-over { border-color: var(--primary); background: var(--primary-light); }
+        .file-drop-zone .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .file-drop-zone .title { font-weight: 600; font-size: 1rem; }
+        .file-drop-zone .hint { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.3rem; }
+        .file-drop-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .file-name { font-size: 0.85rem; color: var(--primary); margin-top: 0.5rem; }
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            letter-spacing: -0.2px;
+        }
+        .submit-btn:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(59,130,246,0.3); }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .message { text-align: center; margin-top: 1rem; font-weight: 500; }
+        footer { text-align: center; margin-top: 3rem; color: var(--text-secondary); font-size: 0.75rem; }
+        @media (max-width: 500px) { header { flex-direction: column; align-items: flex-start; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1 id="formTitle">הרשמת מאבטח חדש</h1>
+                <div class="meta" id="formMeta">מלא את הפרטים והעלה מסמכים</div>
+            </div>
+            <div class="lang-selector" id="langSelector">
+                <button class="lang-btn active" data-lang="he">עברית</button>
+                <button class="lang-btn" data-lang="ru">Русский</button>
+                <button class="lang-btn" data-lang="en">English</button>
+            </div>
+        </header>
+        <form id="guardForm">
+            <div class="section-title" id="personalSection">מידע אישי</div>
+            <div id="personalFields"></div>
+            <div class="section-title" id="docsSection">העלאת מסמכים</div>
+            <div id="docsContainer"></div>
+            <button type="submit" class="submit-btn" id="submitBtn">שלח טופס</button>
+            <div class="message" id="message"></div>
+        </form>
+        <footer>© StrongLight Guard System</footer>
+    </div>
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJwdO9tNKnZHmSmlyS6Fhef0x6z9Ip4EU-YPeY3JTF4SoROvQ92fnuUF6KmgATnnlH/exec';
+        
+        const translations = {
+            he: {
+                title: 'הרשמת מאבטח חדש', meta: 'מלא את הפרטים והעלה מסמכים',
+                personal: 'מידע אישי', fullName: 'שם מלא', idNumber: 'תעודת זהות',
+                email: 'אימייל', phone: 'טלפון נייד', notes: 'הערות נוספות',
+                docs: 'העלאת מסמכים', cv: 'קורות חיים', cvHint: 'PDF, Word — גרור לכאן',
+                idSupplement: 'ספח תעודת זהות', idSupplementHint: 'צילום ברור — גרור לכאן',
+                idFront: 'תעודת זהות (צד קדמי)', idFrontHint: 'צד עם התמונה — גרור לכאן',
+                idBack: 'תעודת זהות (צד אחורי)', idBackHint: 'אופציונלי — גרור לכאן',
+                discharge: 'תעודת שחרור בכבוד', dischargeHint: 'אישור צבאי/לאומי — גרור לכאן',
+                driver: 'רישיון נהיגה', driverHint: 'רישיון בתוקף — גרור לכאן',
+                submit: 'שלח טופס', success: 'הטופס נשלח בהצלחה!',
+                error: 'שגיאה בשליחה. נסה שוב.', missing: 'נא למלא את כל שדות החובה.',
+                fileSelected: 'נבחר קובץ'
+            },
+            en: {
+                title: 'Security Guard Registration', meta: 'Fill in your details and upload documents',
+                personal: 'Personal Information', fullName: 'Full Name', idNumber: 'ID Number',
+                email: 'Email', phone: 'Mobile Phone', notes: 'Additional Notes',
+                docs: 'Upload Documents', cv: 'CV / Resume', cvHint: 'PDF, Word — Drag here',
+                idSupplement: 'ID Supplement', idSupplementHint: 'Clear copy — Drag here',
+                idFront: 'ID Card (Front)', idFrontHint: 'Side with photo — Drag here',
+                idBack: 'ID Card (Back)', idBackHint: 'Optional — Drag here',
+                discharge: 'Honorable Discharge Certificate', dischargeHint: 'Military/national service — Drag here',
+                driver: 'Driver\'s License', driverHint: 'Valid license — Drag here',
+                submit: 'Submit', success: 'Form submitted successfully!',
+                error: 'Submission failed. Try again.', missing: 'Please fill all required fields.',
+                fileSelected: 'File selected'
+            },
+            ru: {
+                title: 'Регистрация охранника', meta: 'Заполните данные и загрузите документы',
+                personal: 'Личная информация', fullName: 'Полное имя', idNumber: 'Номер удостоверения',
+                email: 'Эл. почта', phone: 'Мобильный телефон', notes: 'Дополнительные примечания',
+                docs: 'Загрузить документы', cv: 'Резюме', cvHint: 'PDF, Word — Перетащите сюда',
+                idSupplement: 'Вкладыш удостоверения', idSupplementHint: 'Четкая копия — Перетащите сюда',
+                idFront: 'Удостоверение (лицевая сторона)', idFrontHint: 'Сторона с фото — Перетащите сюда',
+                idBack: 'Удостоверение (обратная сторона)', idBackHint: 'Необязательно — Перетащите сюда',
+                discharge: 'Свидетельство о почетном увольнении', dischargeHint: 'Военная служба — Перетащите сюда',
+                driver: 'Водительские права', driverHint: 'Действующие права — Перетащите сюда',
+                submit: 'Отправить', success: 'Форма успешно отправлена!',
+                error: 'Ошибка отправки. Попробуйте еще раз.', missing: 'Заполните все обязательные поля.',
+                fileSelected: 'Файл выбран'
+            }
+        };
+
+        const fieldConfig = [
+            { id: 'fullName', type: 'text', required: true },
+            { id: 'idNumber', type: 'text', required: true },
+            { id: 'email', type: 'email', required: false },
+            { id: 'phone', type: 'tel', required: true },
+            { id: 'notes', type: 'textarea', required: false }
+        ];
+
+        const fileConfig = [
+            { id: 'cv', accept: '.pdf,.doc,.docx,.jpg,.png', required: true },
+            { id: 'idSupplement', accept: '.pdf,.jpg,.png', required: true },
+            { id: 'idFront', accept: '.pdf,.jpg,.png', required: true },
+            { id: 'idBack', accept: '.pdf,.jpg,.png', required: false },
+            { id: 'discharge', accept: '.pdf,.jpg,.png', required: true },
+            { id: 'driver', accept: '.pdf,.jpg,.png', required: true }
+        ];
+
+        let currentLang = 'he';
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('formTitle').textContent = t.title;
+            document.getElementById('formMeta').textContent = t.meta;
+            document.getElementById('personalSection').textContent = t.personal;
+            document.getElementById('docsSection').textContent = t.docs;
+            document.getElementById('submitBtn').textContent = t.submit;
+
+            const fieldsContainer = document.getElementById('personalFields');
+            fieldsContainer.innerHTML = '';
+            fieldConfig.forEach(field => {
+                const group = document.createElement('div');
+                group.className = 'input-group';
+                if (field.type === 'textarea') {
+                    group.innerHTML = `<textarea name="${field.id}" placeholder=" " ${field.required ? 'required' : ''}></textarea><label>${t[field.id]}</label>`;
+                } else {
+                    group.innerHTML = `<input type="${field.type}" name="${field.id}" placeholder=" " ${field.required ? 'required' : ''}><label>${t[field.id]}</label>`;
+                }
+                fieldsContainer.appendChild(group);
+            });
+
+            const docsContainer = document.getElementById('docsContainer');
+            docsContainer.innerHTML = '';
+            fileConfig.forEach(file => {
+                const zone = document.createElement('div');
+                zone.className = 'file-drop-zone';
+                zone.innerHTML = `<div class="icon">☁️</div><div class="title">${t[file.id]}</div><div class="hint">${t[file.id + 'Hint']}</div><input type="file" name="${file.id}" accept="${file.accept}" ${file.required ? 'required' : ''}><div class="file-name" id="file-${file.id}"></div>`;
+                docsContainer.appendChild(zone);
+
+                const fileInput = zone.querySelector('input[type="file"]');
+                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+                zone.addEventListener('drop', e => {
+                    e.preventDefault(); zone.classList.remove('drag-over');
+                    if (e.dataTransfer.files.length) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); }
+                });
+                fileInput.addEventListener('change', function() {
+                    const display = document.getElementById('file-' + file.id);
+                    display.textContent = this.files?.[0] ? t.fileSelected + ': ' + this.files[0].name : '';
+                });
+            });
+
+            document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
+        }
+
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => applyLanguage(btn.dataset.lang)));
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const langParam = urlParams.get('lang');
+        applyLanguage(['he','en','ru'].includes(langParam) ? langParam : 'he');
+
+        document.getElementById('guardForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const t = translations[currentLang];
+            const msg = document.getElementById('message');
+            msg.textContent = '';
+            if (!e.target.checkValidity()) { msg.textContent = t.missing; msg.style.color = 'red'; return; }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true; btn.textContent = '...שולח';
+
+            const payload = {
+                language: currentLang === 'he' ? 'he' : currentLang === 'ru' ? 'ru' : 'en',
+                fullName: e.target.fullName.value.trim(),
+                idNumber: e.target.idNumber.value.trim(),
+                email: e.target.email.value.trim(),
+                phone: e.target.phone.value.trim(),
+                notes: e.target.notes ? e.target.notes.value.trim() : ''
+            };
+
+            const filePromises = fileConfig.map(async file => {
+                const input = e.target[file.id];
+                if (input.files?.[0]) {
+                    payload[file.id] = { name: input.files[0].name, mime: input.files[0].type, content: await toBase64(input.files[0]) };
+                }
+            });
+
+            try {
+                await Promise.all(filePromises);
+                const response = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                if (response.ok) {
+                    msg.textContent = t.success; msg.style.color = 'lightgreen';
+                    e.target.reset(); fileConfig.forEach(f => document.getElementById('file-' + f.id).textContent = '');
+                } else { throw new Error('Network'); }
+            } catch { msg.textContent = t.error; msg.style.color = 'red'; }
+            finally { btn.disabled = false; btn.textContent = t.submit; }
+        });
+
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+</html>
