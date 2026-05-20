@@ -168,6 +168,29 @@
         .file-row input[type="file"] { display: none; }
         .file-name { font-size: 0.8rem; color: var(--accent); margin-top: 0.3rem; }
 
+        /* Progress Bar (Apple style) */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 0.8rem;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            width: 40%;
+            border-radius: 2px;
+            animation: progressAnim 1.2s ease-in-out infinite;
+        }
+        @keyframes progressAnim {
+            0%   { transform: translateX(-100%); }
+            50%  { transform: translateX(60%); }
+            100% { transform: translateX(100%); }
+        }
+
         .submit-btn {
             width: 100%;
             background: var(--accent);
@@ -179,7 +202,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
         .submit-btn:hover { background: #7eb4ff; transform: translateY(-1px); }
         .submit-btn:active { transform: scale(0.98); }
@@ -214,6 +237,9 @@
             <div class="form-list" id="docsContainer"></div>
 
             <button type="submit" class="submit-btn" id="submitBtn">שלח טופס</button>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar"></div>
+            </div>
             <div class="message" id="message"></div>
         </form>
         <footer>© StrongLight Guard System</footer>
@@ -406,9 +432,13 @@
             e.preventDefault();
             const t = translations[currentLang];
             const msg = document.getElementById('message');
+            msg.textContent = '';
             if (!e.target.checkValidity()) { msg.textContent = t.missing; msg.style.color = 'red'; return; }
+
             const btn = document.getElementById('submitBtn');
             btn.disabled = true; btn.textContent = '...שולח';
+            document.getElementById('progressContainer').style.display = 'block';
+
             const payload = {
                 language: currentLang,
                 fullName: e.target.fullName.value.trim(),
@@ -422,17 +452,22 @@
                 selfMobility: e.target.selfMobility.checked,
                 weaponLicense: e.target.weaponLicense.checked
             };
+
             const filePromises = fileConfig.map(async file => {
                 const input = e.target[file.id];
                 if (input.files?.[0]) payload[file.id] = { name: input.files[0].name, mime: input.files[0].type, content: await toBase64(input.files[0]) };
             });
+
             try {
                 await Promise.all(filePromises);
                 const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
                 if (res.ok) { msg.textContent = t.success; msg.style.color='lightgreen'; e.target.reset(); fileConfig.forEach(f => document.getElementById('file-'+f.id).textContent=''); }
                 else throw new Error('Network');
             } catch { msg.textContent = t.error; msg.style.color='red'; }
-            finally { btn.disabled = false; btn.textContent = t.submit; }
+            finally {
+                document.getElementById('progressContainer').style.display = 'none';
+                btn.disabled = false; btn.textContent = t.submit;
+            }
         });
 
         function toBase64(file) {
