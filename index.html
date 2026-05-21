@@ -168,7 +168,7 @@
         .file-row input[type="file"] { display: none; }
         .file-name { font-size: 0.8rem; color: var(--accent); margin-top: 0.3rem; }
 
-        /* Progress Bar (Apple style) */
+        /* Progress Bar – RTL shimmer */
         .progress-container {
             width: 100%;
             height: 4px;
@@ -177,18 +177,17 @@
             margin-top: 0.8rem;
             overflow: hidden;
             display: none;
+            direction: ltr;
         }
         .progress-bar {
             height: 100%;
-            background: var(--accent);
-            width: 40%;
-            border-radius: 2px;
-            animation: progressAnim 1.2s ease-in-out infinite;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            width: 100%;
+            animation: shimmer 1.8s ease-in-out infinite;
         }
-        @keyframes progressAnim {
-            0%   { transform: translateX(-100%); }
-            50%  { transform: translateX(60%); }
-            100% { transform: translateX(100%); }
+        @keyframes shimmer {
+            0%   { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
 
         .submit-btn {
@@ -203,6 +202,7 @@
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 1rem;
+            text-align: center;
         }
         .submit-btn:hover { background: #7eb4ff; transform: translateY(-1px); }
         .submit-btn:active { transform: scale(0.98); }
@@ -436,7 +436,8 @@
             if (!e.target.checkValidity()) { msg.textContent = t.missing; msg.style.color = 'red'; return; }
 
             const btn = document.getElementById('submitBtn');
-            btn.disabled = true; btn.textContent = '...שולח';
+            btn.disabled = true;
+            btn.textContent = 'שולח…';
             document.getElementById('progressContainer').style.display = 'block';
 
             const payload = {
@@ -466,7 +467,8 @@
             } catch { msg.textContent = t.error; msg.style.color='red'; }
             finally {
                 document.getElementById('progressContainer').style.display = 'none';
-                btn.disabled = false; btn.textContent = t.submit;
+                btn.disabled = false;
+                btn.textContent = t.submit;
             }
         });
 
