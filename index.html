@@ -31,135 +31,33 @@
             letter-spacing: -0.1px;
         }
         .container { width: 100%; max-width: 580px; }
-
-        .header {
-            padding: 2rem 0 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-        }
+        .header { padding: 2rem 0 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
         .header h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.3px; }
         .header .meta { color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.2rem; }
-
         .lang-selector { display: flex; gap: 0.3rem; }
-        .lang-btn {
-            background: rgba(255,255,255,0.06);
-            border: none;
-            color: var(--text-secondary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .lang-btn { background: rgba(255,255,255,0.06); border: none; color: var(--text-secondary); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
         .lang-btn.active { background: var(--accent); color: white; }
         .lang-btn:hover:not(.active) { color: white; }
-
-        .section-title {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin: 1.8rem 0 0.8rem;
-            letter-spacing: 0.4px;
-        }
-
-        .form-list {
-            background: var(--surface);
-            backdrop-filter: blur(var(--blur)) saturate(200%);
-            -webkit-backdrop-filter: blur(var(--blur)) saturate(200%);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-
-        /* Floating Label Field */
-        .field-wrapper {
-            position: relative;
-            padding: 1.2rem 1rem 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
+        .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); margin: 1.8rem 0 0.8rem; letter-spacing: 0.4px; }
+        .form-list { background: var(--surface); backdrop-filter: blur(var(--blur)) saturate(200%); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+        .field-wrapper { position: relative; padding: 1.2rem 1rem 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .field-wrapper:last-child { border-bottom: none; }
-        .field-wrapper input,
-        .field-wrapper textarea {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1.5px solid rgba(255,255,255,0.15);
-            padding: 0.4rem 0 0.3rem;
-            font-size: 1rem;
-            color: var(--text);
-            outline: none;
-            font-family: inherit;
-            transition: border-color 0.2s;
-        }
-        .field-wrapper textarea {
-            min-height: 50px;
-            resize: vertical;
-        }
-        .field-wrapper label {
-            position: absolute;
-            top: 50%;
-            right: 1rem;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            pointer-events: none;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-origin: right top;
-        }
-        .field-wrapper input:focus,
-        .field-wrapper textarea:focus {
-            border-color: var(--accent);
-        }
-        .field-wrapper input:focus ~ label,
-        .field-wrapper input:not(:placeholder-shown) ~ label,
-        .field-wrapper textarea:focus ~ label,
-        .field-wrapper textarea:not(:placeholder-shown) ~ label {
-            top: 0.5rem;
-            transform: translateY(0);
-            font-size: 0.72rem;
-            color: var(--accent);
-        }
-
-        /* Toggle Row */
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            padding: 0.9rem 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-        }
+        .field-wrapper input, .field-wrapper textarea { width: 100%; background: transparent; border: none; border-bottom: 1.5px solid rgba(255,255,255,0.15); padding: 0.4rem 0 0.3rem; font-size: 1rem; color: var(--text); outline: none; font-family: inherit; transition: border-color 0.2s; }
+        .field-wrapper textarea { min-height: 50px; resize: vertical; }
+        .field-wrapper label { position: absolute; top: 50%; right: 1rem; transform: translateY(-50%); color: var(--text-secondary); font-size: 0.95rem; pointer-events: none; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: right top; }
+        .field-wrapper input:focus, .field-wrapper textarea:focus { border-color: var(--accent); }
+        .field-wrapper input:focus ~ label, .field-wrapper input:not(:placeholder-shown) ~ label, .field-wrapper textarea:focus ~ label, .field-wrapper textarea:not(:placeholder-shown) ~ label { top: 0.5rem; transform: translateY(0); font-size: 0.72rem; color: var(--accent); }
+        .toggle-row { display: flex; align-items: center; padding: 0.9rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .toggle-row:last-child { border-bottom: none; }
-        .toggle-row .form-label {
-            flex: 1;
-            font-size: 0.9rem;
-            color: var(--text);
-        }
+        .toggle-row .form-label { flex: 1; font-size: 0.9rem; color: var(--text); }
         .toggle { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
         .toggle input { display: none; }
-        .toggle-slider {
-            width: 46px; height: 28px; background: #3a3a3c; border-radius: 14px;
-            transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1); position: relative;
-        }
-        .toggle-slider::after {
-            content: ''; position: absolute; top: 2px; left: 2px;
-            width: 24px; height: 24px; background: white; border-radius: 50%;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        .toggle-slider { width: 46px; height: 28px; background: #3a3a3c; border-radius: 14px; transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; background: white; border-radius: 50%; transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         .toggle input:checked + .toggle-slider { background: var(--accent); }
         .toggle input:checked + .toggle-slider::after { transform: translateX(18px); }
         .toggle-answer { font-size: 0.9rem; color: var(--text); min-width: 32px; }
-
-        /* File Row */
-        .file-row {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            cursor: pointer;
-            transition: background 0.15s;
-        }
+        .file-row { display: flex; align-items: center; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.15s; }
         .file-row:hover { background: rgba(255,255,255,0.02); }
         .file-row .icon { font-size: 1.4rem; margin-left: 0.8rem; opacity: 0.6; }
         .file-row .info { flex: 1; }
@@ -167,47 +65,13 @@
         .file-row .hint { font-size: 0.75rem; color: var(--text-secondary); }
         .file-row input[type="file"] { display: none; }
         .file-name { font-size: 0.8rem; color: var(--accent); margin-top: 0.3rem; }
-
-        /* Progress Bar – RTL shimmer */
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            margin-top: 0.8rem;
-            overflow: hidden;
-            display: none;
-            direction: ltr;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            width: 100%;
-            animation: shimmer 1.8s ease-in-out infinite;
-        }
-        @keyframes shimmer {
-            0%   { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            padding: 0.9rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-top: 1rem;
-            text-align: center;
-        }
+        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 0.8rem; overflow: hidden; display: none; direction: ltr; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, transparent, var(--accent), transparent); width: 100%; animation: shimmer 1.8s ease-in-out infinite; }
+        @keyframes shimmer { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .submit-btn { width: 100%; background: var(--accent); color: white; border: none; border-radius: 14px; padding: 0.9rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); margin-top: 1rem; text-align: center; }
         .submit-btn:hover { background: #7eb4ff; transform: translateY(-1px); }
         .submit-btn:active { transform: scale(0.98); }
         .submit-btn:disabled { opacity: 0.5; transform: none; }
-
         .message { text-align: center; margin-top: 1rem; font-weight: 500; font-size: 0.9rem; }
         footer { text-align: center; margin-top: 3rem; color: var(--text-secondary); font-size: 0.7rem; }
     </style>
@@ -225,28 +89,22 @@
                 <button class="lang-btn" data-lang="en">English</button>
             </div>
         </div>
-
         <form id="guardForm">
             <div class="section-title" id="personalSection">מידע אישי</div>
             <div class="form-list" id="personalFields"></div>
-
             <div class="section-title" id="matchSection">התאמה למשרה</div>
             <div class="form-list" id="matchFields"></div>
-
             <div class="section-title" id="docsSection">מסמכים</div>
             <div class="form-list" id="docsContainer"></div>
-
             <button type="submit" class="submit-btn" id="submitBtn">שלח טופס</button>
-            <div class="progress-container" id="progressContainer">
-                <div class="progress-bar"></div>
-            </div>
+            <div class="progress-container" id="progressContainer"><div class="progress-bar"></div></div>
             <div class="message" id="message"></div>
         </form>
         <footer>© StrongLight Guard System</footer>
     </div>
-
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzs0c7vOJ6SKNYXe-uYxMZ0GT-2BaLvJ560JZnb3y2zzAHbDJko8i_OAMET7loHOtxK/exec';
+        const MAX_FILE_SIZE_MB = 5; // מגבלת גודל לקובץ בודד (MB)
 
         const translations = {
             he: {
@@ -268,7 +126,9 @@
                 driver: 'רישיון נהיגה', driverHint: 'רישיון בתוקף',
                 submit: 'שלח טופס', success: 'הטופס נשלח בהצלחה!',
                 error: 'שגיאה בשליחה. נסה שוב.', missing: 'נא למלא את כל שדות החובה.',
-                fileSelected: 'נבחר'
+                fileSelected: 'נבחר', fileTooBig: 'הקובץ גדול מדי (מקסימום ' + MAX_FILE_SIZE_MB + 'MB)',
+                networkError: 'בעיית רשת. בדוק חיבור ונסה שוב.',
+                scriptError: 'שגיאת שרת. פנה לתמיכה.'
             },
             en: {
                 title: 'Guard Registration', meta: 'Fill in your details and upload documents',
@@ -288,8 +148,10 @@
                 discharge: 'Discharge Certificate', dischargeHint: 'Military service',
                 driver: 'Driver\'s License', driverHint: 'Valid license',
                 submit: 'Submit', success: 'Submitted successfully!',
-                error: 'Submission failed.', missing: 'Please fill all required fields.',
-                fileSelected: 'Selected'
+                error: 'Submission failed. Try again.', missing: 'Please fill all required fields.',
+                fileSelected: 'Selected', fileTooBig: 'File too large (max ' + MAX_FILE_SIZE_MB + 'MB)',
+                networkError: 'Network error. Check connection and try again.',
+                scriptError: 'Server error. Contact support.'
             },
             ru: {
                 title: 'Регистрация охранника', meta: 'Заполните данные и загрузите документы',
@@ -309,8 +171,10 @@
                 discharge: 'Свидетельство увольнения', dischargeHint: 'Военная служба',
                 driver: 'Водительские права', driverHint: 'Действующие права',
                 submit: 'Отправить', success: 'Отправлено успешно!',
-                error: 'Ошибка отправки.', missing: 'Заполните все обязательные поля.',
-                fileSelected: 'Выбрано'
+                error: 'Ошибка отправки. Попробуйте снова.', missing: 'Заполните все обязательные поля.',
+                fileSelected: 'Выбрано', fileTooBig: 'Файл слишком большой (макс. ' + MAX_FILE_SIZE_MB + 'MB)',
+                networkError: 'Ошибка сети. Проверьте соединение и попробуйте снова.',
+                scriptError: 'Ошибка сервера. Свяжитесь со службой поддержки.'
             }
         };
 
@@ -321,7 +185,6 @@
             { id: 'phone', type: 'tel', required: true },
             { id: 'notes', type: 'textarea', required: false }
         ];
-
         const matchConfig = [
             { id: 'jobScope', type: 'radio', options: ['מלאה', 'חלקית'] },
             { id: 'saturdayAvailable', type: 'toggle' },
@@ -329,7 +192,6 @@
             { id: 'selfMobility', type: 'toggle' },
             { id: 'weaponLicense', type: 'toggle' }
         ];
-
         const fileConfig = [
             { id: 'cv', accept: '.pdf,.doc,.docx,.jpg,.png', required: true },
             { id: 'idSupplement', accept: '.pdf,.jpg,.png', required: true },
@@ -338,7 +200,6 @@
             { id: 'discharge', accept: '.pdf,.jpg,.png', required: true },
             { id: 'driver', accept: '.pdf,.jpg,.png', required: true }
         ];
-
         let currentLang = 'he';
 
         function applyLanguage(lang) {
@@ -350,75 +211,45 @@
             document.getElementById('matchSection').textContent = t.match;
             document.getElementById('docsSection').textContent = t.docs;
             document.getElementById('submitBtn').textContent = t.submit;
-
             const personalContainer = document.getElementById('personalFields');
             personalContainer.innerHTML = '';
             fieldConfig.forEach(f => {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'field-wrapper';
                 const isTextarea = f.type === 'textarea';
-                const inputHtml = isTextarea
-                    ? `<textarea name="${f.id}" placeholder=" " ${f.required ? 'required' : ''}></textarea>`
-                    : `<input type="${f.type}" name="${f.id}" placeholder=" " ${f.required ? 'required' : ''}>`;
+                const inputHtml = isTextarea ? `<textarea name="${f.id}" placeholder=" " ${f.required ? 'required' : ''}></textarea>` : `<input type="${f.type}" name="${f.id}" placeholder=" " ${f.required ? 'required' : ''}>`;
                 wrapper.innerHTML = `${inputHtml}<label>${t[f.id]}</label>`;
                 personalContainer.appendChild(wrapper);
             });
-
             const matchContainer = document.getElementById('matchFields');
             matchContainer.innerHTML = '';
             matchConfig.forEach(item => {
                 if (item.type === 'radio') {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'toggle-row';
-                    wrapper.innerHTML = `
-                        <span class="form-label">${t[item.id]}</span>
-                        <div class="radio-group" style="display:flex; gap:1rem; margin-left:auto;">
-                            ${item.options.map(opt => `<label class="radio-option"><input type="radio" name="${item.id}" value="${opt}" ${opt === 'מלאה' || opt === 'Full-time' || opt === 'Полная' ? 'checked' : ''}> ${opt}</label>`).join('')}
-                        </div>
-                    `;
+                    wrapper.innerHTML = `<span class="form-label">${t[item.id]}</span><div class="radio-group" style="display:flex; gap:1rem; margin-left:auto;">${item.options.map(opt => `<label class="radio-option"><input type="radio" name="${item.id}" value="${opt}" ${opt === 'מלאה' || opt === 'Full-time' || opt === 'Полная' ? 'checked' : ''}> ${opt}</label>`).join('')}</div>`;
                     matchContainer.appendChild(wrapper);
                 } else {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'toggle-row';
-                    wrapper.innerHTML = `
-                        <span class="form-label">${t[item.id]}</span>
-                        <label class="toggle" style="margin-left:auto;">
-                            <input type="checkbox" name="${item.id}">
-                            <span class="toggle-slider"></span>
-                            <span class="toggle-answer">${t.no}</span>
-                        </label>
-                    `;
+                    wrapper.innerHTML = `<span class="form-label">${t[item.id]}</span><label class="toggle" style="margin-left:auto;"><input type="checkbox" name="${item.id}"><span class="toggle-slider"></span><span class="toggle-answer">${t.no}</span></label>`;
                     const checkbox = wrapper.querySelector('input[type="checkbox"]');
                     const answer = wrapper.querySelector('.toggle-answer');
-                    checkbox.addEventListener('change', () => {
-                        answer.textContent = checkbox.checked ? t.yes : t.no;
-                    });
+                    checkbox.addEventListener('change', () => { answer.textContent = checkbox.checked ? t.yes : t.no; });
                     matchContainer.appendChild(wrapper);
                 }
             });
-
             const docsContainer = document.getElementById('docsContainer');
             docsContainer.innerHTML = '';
             fileConfig.forEach(file => {
                 const row = document.createElement('div');
                 row.className = 'file-row';
-                row.innerHTML = `
-                    <div class="icon">📎</div>
-                    <div class="info">
-                        <div class="title">${t[file.id]}</div>
-                        <div class="hint">${t[file.id + 'Hint']}</div>
-                        <div class="file-name" id="file-${file.id}"></div>
-                    </div>
-                    <input type="file" name="${file.id}" accept="${file.accept}" ${file.required ? 'required' : ''}>
-                `;
+                row.innerHTML = `<div class="icon">📎</div><div class="info"><div class="title">${t[file.id]}</div><div class="hint">${t[file.id + 'Hint']}</div><div class="file-name" id="file-${file.id}"></div></div><input type="file" name="${file.id}" accept="${file.accept}" ${file.required ? 'required' : ''}>`;
                 docsContainer.appendChild(row);
                 const input = row.querySelector('input[type="file"]');
                 row.addEventListener('click', () => input.click());
-                input.addEventListener('change', () => {
-                    document.getElementById('file-' + file.id).textContent = input.files?.[0] ? t.fileSelected + ': ' + input.files[0].name : '';
-                });
+                input.addEventListener('change', () => { document.getElementById('file-' + file.id).textContent = input.files?.[0] ? t.fileSelected + ': ' + input.files[0].name : ''; });
             });
-
             document.documentElement.dir = lang === 'he' ? 'rtl' : 'ltr';
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active');
@@ -434,6 +265,19 @@
             const msg = document.getElementById('message');
             msg.textContent = '';
             if (!e.target.checkValidity()) { msg.textContent = t.missing; msg.style.color = 'red'; return; }
+
+            // בדיקת גודל קבצים
+            for (const file of fileConfig) {
+                const input = e.target[file.id];
+                if (input.files?.[0]) {
+                    const sizeMB = input.files[0].size / (1024 * 1024);
+                    if (sizeMB > MAX_FILE_SIZE_MB) {
+                        msg.textContent = t.fileTooBig + ' (' + file.id + ': ' + sizeMB.toFixed(1) + 'MB)';
+                        msg.style.color = 'red';
+                        return;
+                    }
+                }
+            }
 
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
@@ -456,16 +300,40 @@
 
             const filePromises = fileConfig.map(async file => {
                 const input = e.target[file.id];
-                if (input.files?.[0]) payload[file.id] = { name: input.files[0].name, mime: input.files[0].type, content: await toBase64(input.files[0]) };
+                if (input.files?.[0]) {
+                    try {
+                        const base64 = await toBase64(input.files[0]);
+                        payload[file.id] = { name: input.files[0].name, mime: input.files[0].type, content: base64 };
+                    } catch (err) {
+                        throw new Error('File read error: ' + file.id);
+                    }
+                }
             });
 
             try {
                 await Promise.all(filePromises);
                 const res = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-                if (res.ok) { msg.textContent = t.success; msg.style.color='lightgreen'; e.target.reset(); fileConfig.forEach(f => document.getElementById('file-'+f.id).textContent=''); }
-                else throw new Error('Network');
-            } catch { msg.textContent = t.error; msg.style.color='red'; }
-            finally {
+                const responseText = await res.text();
+                if (res.ok && responseText === 'OK') {
+                    msg.textContent = t.success; msg.style.color = 'lightgreen';
+                    e.target.reset();
+                    fileConfig.forEach(f => { const el = document.getElementById('file-' + f.id); if (el) el.textContent = ''; });
+                } else {
+                    console.error('Script response:', responseText);
+                    msg.textContent = t.scriptError + ' (' + responseText + ')';
+                    msg.style.color = 'red';
+                }
+            } catch (err) {
+                console.error('Submission error:', err);
+                if (err.message && err.message.includes('File read error')) {
+                    msg.textContent = t.error + ' (שגיאה בקריאת קובץ)';
+                } else if (err.message && (err.message.includes('NetworkError') || err.message.includes('Failed to fetch'))) {
+                    msg.textContent = t.networkError;
+                } else {
+                    msg.textContent = t.error + ' (' + err.message + ')';
+                }
+                msg.style.color = 'red';
+            } finally {
                 document.getElementById('progressContainer').style.display = 'none';
                 btn.disabled = false;
                 btn.textContent = t.submit;
@@ -476,7 +344,7 @@
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = reject;
+                reader.onerror = () => reject(new Error('Failed to read file'));
                 reader.readAsDataURL(file);
             });
         }
