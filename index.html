@@ -312,23 +312,21 @@
 
             try {
                 await Promise.all(filePromises);
-                // --- שינוי: שימוש ב-sendBeacon במקום fetch ---
-                const blob = new Blob([JSON.stringify(payload)], { type: 'text/plain' });
-                const success = navigator.sendBeacon(SCRIPT_URL, blob);
-                if (success) {
-                    msg.textContent = t.success; msg.style.color = 'lightgreen';
-                    e.target.reset();
-                    fileConfig.forEach(f => { const el = document.getElementById('file-' + f.id); if (el) el.textContent = ''; });
-                } else {
-                    msg.textContent = t.error; msg.style.color = 'red';
-                }
+                // --- החלפת sendBeacon ב-fetch עם no-cors ---
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+                // מכיוון שלא ניתן לקרוא תגובה, אנו מניחים הצלחה
+                msg.textContent = t.success;
+                msg.style.color = 'lightgreen';
+                e.target.reset();
+                fileConfig.forEach(f => { const el = document.getElementById('file-' + f.id); if (el) el.textContent = ''; });
             } catch (err) {
                 console.error('Submission error:', err);
-                if (err.message && err.message.includes('File read error')) {
-                    msg.textContent = t.error + ' (שגיאה בקריאת קובץ)';
-                } else {
-                    msg.textContent = t.error + ' (' + err.message + ')';
-                }
+                msg.textContent = t.error + ' (' + err.message + ')';
                 msg.style.color = 'red';
             } finally {
                 document.getElementById('progressContainer').style.display = 'none';
