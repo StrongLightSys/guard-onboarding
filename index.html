@@ -103,6 +103,7 @@
         <footer>© StrongLight Guard System</footer>
     </div>
     <script>
+        console.log('apply.html v3');
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzs0c7vOJ6SKNYXe-uYxMZ0GT-2BaLvJ560JZnb3y2zzAHbDJko8i_OAMET7loHOtxK/exec';
         const MAX_FILE_SIZE_MB = 5;
 
@@ -266,7 +267,6 @@
             msg.textContent = '';
             if (!e.target.checkValidity()) { msg.textContent = t.missing; msg.style.color = 'red'; return; }
 
-            // בדיקת גודל קבצים
             for (const file of fileConfig) {
                 const input = e.target[file.id];
                 if (input.files?.[0]) {
@@ -312,14 +312,13 @@
 
             try {
                 await Promise.all(filePromises);
-                // --- החלפת sendBeacon ב-fetch עם no-cors ---
+                // שימוש ב-fetch עם no-cors – לא נקרא תגובה
                 fetch(SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
                     body: JSON.stringify(payload)
                 });
-                // מכיוון שלא ניתן לקרוא תגובה, אנו מניחים הצלחה
                 msg.textContent = t.success;
                 msg.style.color = 'lightgreen';
                 e.target.reset();
