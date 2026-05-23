@@ -3,81 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StrongLight GuardSystem – הרשמה</title>
-    <meta name="theme-color" content="#0a0a0a">
+    <title>הרשמה</title>
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
-        html, body { height: 100%; background: #08080a; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-        .wrapper { display: flex; flex-direction: column; height: 100vh; }
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: rgba(12, 12, 15, 0.2);
-            backdrop-filter: blur(10px) saturate(120%);
-            -webkit-backdrop-filter: blur(10px) saturate(120%);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            padding: 0.9rem 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-            gap: 1rem;
-            transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .header.scrolled {
-            background: rgba(18, 18, 22, 0.85);
-            backdrop-filter: blur(20px) saturate(200%);
-            -webkit-backdrop-filter: blur(20px) saturate(200%);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-        }
-        .brand { display: flex; flex-direction: column; }
-        .brand h1 { font-size: 1rem; font-weight: 600; color: #e5e5e7; letter-spacing: -0.2px; margin: 0; }
-        .brand .subtitle { color: #98989d; font-size: 0.72rem; margin-top: 0.1rem; font-weight: 400; }
-        .datetime { color: #98989d; font-size: 0.72rem; font-weight: 400; white-space: nowrap; direction: ltr; text-align: right; opacity: 0.8; letter-spacing: 0.2px; }
-        .iframe-container { flex: 1; overflow: hidden; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .brand h1::after { content: ''; display: block; width: 30px; height: 2px; background: #5e9eff; margin-top: 0.25rem; }
+        html, body { height: 100%; overflow: hidden; background: #000; }
+        iframe { width: 100%; height: 100%; border: none; display: block; }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="wrapper">
-        <div class="header" id="header">
-            <div class="brand">
-                <h1>StrongLight GuardSystem</h1>
-                <div class="subtitle">הרשמה</div>
-            </div>
-            <span class="datetime" id="liveDateTime"></span>
-        </div>
-        <div class="iframe-container">
-            <iframe src="https://script.google.com/macros/s/AKfycbw5pExaXQIxz4EkEK7rY7yXnnkvVOoodGTUfifLE8TEZNR5hIEcElTd70cOH5LuXp3U/exec"
-                    title="טופס הרשמה"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
-            </iframe>
-        </div>
-    </div>
-    <script>
-        function updateDateTime() {
-            var now = new Date();
-            var options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            var formatted = now.toLocaleString('he-IL', options).replace(',', '');
-            document.getElementById('liveDateTime').textContent = formatted;
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-
-        window.addEventListener('message', function(event) {
-            if (event.data && typeof event.data.scrollY === 'number') {
-                var header = document.getElementById('header');
-                if (event.data.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            }
-        });
-    </script>
+    <iframe src="https://script.google.com/macros/s/AKfycbw5pExaXQIxz4EkEK7rY7yXnnkvVOoodGTUfifLE8TEZNR5hIEcElTd70cOH5LuXp3U/exec"
+            title="טופס הרשמה"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups">
+    </iframe>
 </body>
 </html>
