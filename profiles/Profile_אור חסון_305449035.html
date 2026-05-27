@@ -5,56 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>פרופיל מאבטח - אור חסון</title>
     <meta property="og:title" content="פרופיל מאבטח - אור חסון">
-    <meta property="og:description" content="ת.ז. 305449035 | הוגש 28/05/2026 00:43:01">
+    <meta property="og:description" content="ת.ז. 305449035 | הוגש 28/05/2026 00:51:34">
     <meta name="description" content="דף פרופיל מועמד במערכת GuardSystem">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f0f2f5;
+            --bg: #f4f6f9;
             --card-bg: #ffffff;
-            --card-shadow: 0 8px 30px rgba(0,0,0,0.05);
-            --border: #eef2f8;
-            --primary: #2c6280;
-            --primary-light: #bdd4f0;
-            --text: #1a2634;
-            --text-secondary: #5d6f88;
-            --label: #6c7e9e;
-            --danger: #b91c1c;
-            --danger-bg: #fff0f0;
-            --optional: #7a8aa5;
-            --footer-text: #8b9ab5;
-            --btn-bg: #f0f4f9;
-            --btn-hover: #e1e8f0;
-            --transition: 0.2s ease;
+            --card-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            --border: #e1e5eb;
+            --primary: #1e3b5c;
+            --primary-light: #4a6b8a;
+            --text: #1a1f2b;
+            --text-secondary: #5a6273;
+            --label: #4b5363;
+            --danger: #c0392b;
+            --danger-bg: #fdf2f2;
+            --optional: #8b919e;
+            --footer-text: #8890a0;
+            --btn-bg: #f0f3f7;
+            --btn-hover: #e0e5ec;
+            --accent-line: #3a5e8c;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #0f1117;
-                --card-bg: #1a1d26;
-                --card-shadow: 0 8px 30px rgba(0,0,0,0.4);
-                --border: #2a2e3a;
-                --primary: #7eb8da;
-                --primary-light: #3d5a73;
-                --text: #e0e4ec;
-                --text-secondary: #a0a8b8;
-                --label: #929bb0;
-                --danger: #ff8080;
-                --danger-bg: #3b2020;
-                --optional: #8a8f9c;
-                --footer-text: #6a7080;
-                --btn-bg: #2a2e3a;
-                --btn-hover: #3d4250;
+                --bg: #0e1116;
+                --card-bg: #171b22;
+                --card-shadow: 0 8px 24px rgba(0,0,0,0.5);
+                --border: #2d333b;
+                --primary: #7ea4c5;
+                --primary-light: #4f6e8c;
+                --text: #e0e4e9;
+                --text-secondary: #a2a9b6;
+                --label: #9099a6;
+                --danger: #f28b82;
+                --danger-bg: #3c2323;
+                --optional: #808590;
+                --footer-text: #6e7580;
+                --btn-bg: #2a2f37;
+                --btn-hover: #3b4149;
             }
         }
 
-        *{margin:0;padding:0;box-sizing:border-box;}
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             background: var(--bg);
             font-family: 'Heebo', system-ui, -apple-system, sans-serif;
-            padding: 1.5rem;
+            padding: 2rem 1.5rem;
             direction: rtl;
             text-align: right;
             display: flex;
@@ -63,24 +63,24 @@
             min-height: 100vh;
             line-height: 1.6;
             color: var(--text);
-            transition: background var(--transition), color var(--transition);
+            transition: background 0.2s, color 0.2s;
         }
         .container {
-            max-width: 1100px;
+            max-width: 1050px;
             width: 100%;
             margin: 0 auto;
-            animation: fadeUp 0.5s ease;
+            animation: fadeIn 0.4s ease;
         }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .profile-card {
             background: var(--card-bg);
-            border-radius: 1.5rem;
+            border-radius: 1.2rem;
             box-shadow: var(--card-shadow);
             overflow: hidden;
-            transition: background var(--transition), box-shadow var(--transition);
+            transition: background 0.2s, box-shadow 0.2s;
         }
         .profile-header {
             padding: 2rem 2rem 1.5rem;
@@ -88,23 +88,22 @@
             background: var(--card-bg);
         }
         .profile-header h1 {
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.2px;
             word-break: break-word;
         }
         .profile-id {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem;
+            gap: 2rem;
             font-size: 0.9rem;
             color: var(--text-secondary);
-            align-items: center;
+            margin-top: 0.6rem;
         }
         .profile-id span {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+            display: inline-block;
         }
         .grid-2col {
             display: grid;
@@ -117,35 +116,31 @@
             border: 1px solid var(--border);
             border-radius: 1rem;
             padding: 1.5rem;
-            transition: background var(--transition), border-color var(--transition);
+            transition: background 0.2s, border-color 0.2s;
         }
         .info-panel h3 {
             font-size: 0.95rem;
             font-weight: 700;
             color: var(--primary);
-            margin-bottom: 1rem;
-            border-right: 3px solid var(--primary-light);
-            padding-right: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.8rem 0;
+            padding: 0.7rem 0;
             border-bottom: 1px solid var(--border);
-            transition: background var(--transition);
+            transition: background 0.15s;
         }
         .info-row:last-child { border-bottom: none; }
-        .info-row:hover { background: rgba(0,0,0,0.02); }
+        .info-row:hover { background: rgba(0,0,0,0.015); }
         .info-label {
             color: var(--label);
             font-weight: 500;
-            min-width: 110px;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+            min-width: 120px;
         }
         .info-value {
             font-weight: 500;
@@ -154,20 +149,23 @@
             flex: 1;
             word-break: break-word;
         }
-        .phone-link, .email-link {
+        .contact-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.3rem;
+            gap: 0.4rem;
             background: var(--btn-bg);
-            padding: 0.4rem 0.8rem;
+            padding: 0.45rem 1rem;
             border-radius: 0.5rem;
             text-decoration: none;
             color: var(--primary);
-            font-weight: 500;
-            transition: background var(--transition), transform var(--transition);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background 0.15s, transform 0.15s;
+            border: 1px solid transparent;
         }
-        .phone-link:hover, .email-link:hover {
+        .contact-link:hover {
             background: var(--btn-hover);
+            border-color: var(--border);
             transform: translateY(-1px);
         }
         .docs-list {
@@ -175,11 +173,10 @@
             padding: 0;
         }
         .docs-list li {
-            padding: 0.8rem 0;
+            padding: 0.75rem 0;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
         }
         .docs-list li:last-child { border-bottom: none; }
         .docs-list a {
@@ -187,42 +184,47 @@
             text-decoration: none;
             font-weight: 500;
             word-break: break-word;
-            transition: color var(--transition);
+            transition: color 0.2s;
         }
-        .docs-list a:hover { text-decoration: underline; }
+        .docs-list a:hover {
+            text-decoration: underline;
+            color: var(--primary-light);
+        }
         .docs-list li::before {
-            content: "📄";
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            content: "—";
+            margin-left: 0.6rem;
+            color: var(--primary);
+            font-weight: 400;
         }
         .missing-required {
             color: var(--danger);
             background: var(--danger-bg);
-            padding: 0.1rem 0.5rem;
+            padding: 0.15rem 0.6rem;
             border-radius: 0.3rem;
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
+            display: inline-block;
+            font-size: 0.9rem;
         }
-        .missing-required::before { content: "⚠️"; }
         .missing-optional {
             color: var(--optional);
+            font-size: 0.9rem;
         }
         .footer-note {
             text-align: center;
-            padding: 1rem;
+            padding: 1.2rem;
             font-size: 0.75rem;
             color: var(--footer-text);
             border-top: 1px solid var(--border);
             background: var(--card-bg);
+            letter-spacing: 0.2px;
         }
         @media (max-width: 780px) {
             .grid-2col { grid-template-columns: 1fr; }
             .profile-header h1 { font-size: 1.5rem; }
+            .profile-id { gap: 1.2rem; }
         }
         @media (max-width: 500px) {
-            body { padding: 0.5rem; }
+            body { padding: 0.8rem 0.6rem; }
             .profile-header { padding: 1.2rem 1rem; }
             .profile-header h1 { font-size: 1.3rem; }
             .grid-2col { padding: 1rem; gap: 1rem; }
@@ -230,11 +232,11 @@
             .info-row {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.3rem;
+                gap: 0.2rem;
             }
-            .info-label { min-width: auto; margin-bottom: 0; }
+            .info-label { min-width: auto; }
             .info-value { text-align: right; }
-            .phone-link, .email-link { width: 100%; justify-content: center; }
+            .contact-link { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -244,24 +246,28 @@
         <div class="profile-header">
             <h1>אור חסון</h1>
             <div class="profile-id">
-                <span>🆔 305449035</span>
-                <span>📅 28/05/2026 00:43:01</span>
+                <span>תעודת זהות: 305449035</span>
+                <span>הוגש בתאריך: 28/05/2026 00:51:34</span>
             </div>
         </div>
         <div class="grid-2col">
             <div class="info-panel">
-                <h3>📞 פרטי קשר</h3>
+                <h3>פרטי קשר</h3>
                 <div class="info-row">
                     <span class="info-label">טלפון</span>
-                    <span class="info-value"><a href="tel:050-9796999" class="phone-link">📱 050-9796999</a></span>
+                    <span class="info-value">
+                        <a href="tel:050-9796999" class="contact-link">חייג 050-9796999</a>
+                    </span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">אימייל</span>
-                    <span class="info-value"><a href="mailto:OrHason2@gmail.com" class="email-link">✉️ OrHason2@gmail.com</a></span>
+                    <span class="info-value">
+                        <a href="mailto:OrHason2@gmail.com" class="contact-link">שלח דוא"ל</a>
+                    </span>
                 </div>
             </div>
             <div class="info-panel">
-                <h3>💼 התאמה למשרה</h3>
+                <h3>התאמה למשרה</h3>
                 <div class="info-row"><span class="info-label">היקף משרה</span><span class="info-value">חלקית</span></div>
                 <div class="info-row"><span class="info-label">זמינות בשבתות</span><span class="info-value">כן</span></div>
                 <div class="info-row"><span class="info-label">רישיון נהיגה</span><span class="info-value">כן</span></div>
@@ -270,7 +276,7 @@
                 <div class="info-row"><span class="info-label">הערות</span><span class="info-value"></span></div>
             </div>
             <div class="info-panel">
-                <h3>📂 מסמכים מצורפים</h3>
+                <h3>מסמכים מצורפים</h3>
                 <ul class="docs-list"><li><a href="https://drive.google.com/file/d/14RgFlc56Ge3JNH4FFIs44AWkAT23eBE2/view?usp=drivesdk" target="_blank">קורות חיים</a></li>
 <li><a href="https://drive.google.com/file/d/1c0eBrBQdER6xnDHmFcuEZS1N9NTP02d8/view?usp=drivesdk" target="_blank">תעודת זהות – צד קדמי</a></li>
 <li><a href="https://drive.google.com/file/d/1Uc8zTwwIZm5Y5xpZirMCzxtXDSDy0_f7/view?usp=drivesdk" target="_blank">תעודת שחרור</a></li>
@@ -280,7 +286,7 @@
 <li><a href="https://drive.google.com/file/d/1qtGSe7t1VCxOhdgfBtJOPDKr5J0J5dgc/view?usp=drivesdk" target="_blank">תעודת זהות – צד אחורי</a></li></ul>
             </div>
         </div>
-        <div class="footer-note">פרופיל מועמד – GuardSystem by StrongLight</div>
+        <div class="footer-note">מערכת GuardSystem — StrongLight</div>
     </div>
 </div>
 </body>
