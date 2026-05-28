@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GuardSystem - דף פרופיל | עידן בן עזרא</title>
-    <link rel="icon" type="image/svg+xml" href="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg">
     <meta property="og:title" content="פרופיל מאבטח - עידן בן עזרא">
-    <meta property="og:description" content="ת.ז. 201321458 | הוגש 28/05/2026 21:54:15">
+    <meta property="og:description" content="ת.ז. 201321458 | הוגש 28/05/2026 22:10:35">
     <meta name="description" content="דף פרופיל מועמד במערכת GuardSystem">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg?v=20260528">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f4f6f9;
+            --bg: #f6f7fa;
             --card-bg: #ffffff;
-            --card-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            --border: #e1e5eb;
+            --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+            --border: #e8ecf2;
             --primary: #1e3b5c;
             --primary-light: #4a6b8a;
             --text: #1a1f2b;
@@ -26,28 +24,34 @@
             --danger-bg: #fdf2f2;
             --optional: #8b919e;
             --footer-text: #8890a0;
-            --btn-bg: #f0f3f7;
-            --btn-hover: #e0e5ec;
+            --btn-bg: #eef2f7;
+            --btn-hover: #dce3eb;
             --accent-line: #3a5e8c;
+            --tag-bg: #eef5fc;
+            --tag-text: #1e3b5c;
+            --radius: 1.2rem;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg: #0e1116;
-                --card-bg: #171b22;
-                --card-shadow: 0 8px 24px rgba(0,0,0,0.5);
-                --border: #2d333b;
+                --bg: #0d0f14;
+                --card-bg: #161920;
+                --card-shadow: 0 10px 30px -10px rgba(0,0,0,0.6);
+                --border: #2a2e3b;
                 --primary: #7ea4c5;
                 --primary-light: #4f6e8c;
-                --text: #e0e4e9;
-                --text-secondary: #a2a9b6;
-                --label: #9099a6;
+                --text: #e2e5ec;
+                --text-secondary: #a0a7b6;
+                --label: #929aab;
                 --danger: #f28b82;
-                --danger-bg: #3c2323;
-                --optional: #808590;
-                --footer-text: #6e7580;
-                --btn-bg: #2a2f37;
-                --btn-hover: #3b4149;
+                --danger-bg: #3c2022;
+                --optional: #7d8494;
+                --footer-text: #6a7180;
+                --btn-bg: #262a35;
+                --btn-hover: #323843;
+                --tag-bg: #1f2b3a;
+                --tag-text: #7ea4c5;
             }
         }
 
@@ -64,84 +68,119 @@
             min-height: 100vh;
             line-height: 1.6;
             color: var(--text);
-            transition: background 0.2s, color 0.2s;
+            transition: background var(--transition), color var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
         .container {
-            max-width: 1050px;
+            max-width: 1060px;
             width: 100%;
             margin: 0 auto;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.45s ease;
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* ========== CARD ========== */
         .profile-card {
             background: var(--card-bg);
-            border-radius: 1.2rem;
+            border-radius: var(--radius);
             box-shadow: var(--card-shadow);
             overflow: hidden;
-            transition: background 0.2s, box-shadow 0.2s;
+            transition: background var(--transition), box-shadow var(--transition);
+            border: 1px solid var(--border);
         }
+
+        /* ========== HEADER ========== */
         .profile-header {
-            padding: 2rem 2rem 1.5rem;
+            padding: 2.2rem 2.2rem 1.6rem;
             border-bottom: 1px solid var(--border);
             background: var(--card-bg);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+        .profile-header .logo {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            margin-top: 0.2rem;
+        }
+        .profile-header .identity {
+            flex: 1;
+            min-width: 0;
         }
         .profile-header h1 {
             font-size: 1.9rem;
             font-weight: 700;
-            margin-bottom: 0.4rem;
-            letter-spacing: -0.2px;
+            margin-bottom: 0.5rem;
             word-break: break-word;
+            letter-spacing: -0.2px;
+            color: var(--text);
         }
         .profile-id {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
-            font-size: 0.9rem;
+            gap: 1.8rem;
+            font-size: 0.88rem;
             color: var(--text-secondary);
-            margin-top: 0.6rem;
         }
         .profile-id span {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2rem;
         }
+
+        /* ========== GRID ========== */
         .grid-2col {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-            padding: 1.5rem 2rem;
+            padding: 1.8rem 2.2rem;
         }
+
+        /* ========== PANELS ========== */
         .info-panel {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 1rem;
             padding: 1.5rem;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+        .info-panel:hover {
+            box-shadow: 0 4px 14px rgba(0,0,0,0.04);
         }
         .info-panel h3 {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 1.2rem;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--border);
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
+
+        /* ========== ROWS ========== */
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 0.7rem 0;
+            padding: 0.65rem 0;
             border-bottom: 1px solid var(--border);
             transition: background 0.15s;
         }
         .info-row:last-child { border-bottom: none; }
-        .info-row:hover { background: rgba(0,0,0,0.015); }
         .info-label {
             color: var(--label);
             font-weight: 500;
-            min-width: 120px;
+            min-width: 115px;
         }
         .info-value {
             font-weight: 500;
@@ -150,25 +189,32 @@
             flex: 1;
             word-break: break-word;
         }
+
+        /* ========== CONTACT LINKS ========== */
         .contact-link {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
             background: var(--btn-bg);
-            padding: 0.45rem 1rem;
-            border-radius: 0.5rem;
+            padding: 0.45rem 1.1rem;
+            border-radius: 0.6rem;
             text-decoration: none;
             color: var(--primary);
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: background 0.15s, transform 0.15s;
+            font-size: 0.9rem;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
             border: 1px solid transparent;
+            letter-spacing: -0.1px;
         }
         .contact-link:hover {
             background: var(--btn-hover);
             border-color: var(--border);
             transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
+        .contact-link:active { transform: translateY(0); }
+
+        /* ========== DOCUMENTS LIST ========== */
         .docs-list {
             list-style: none;
             padding: 0;
@@ -178,6 +224,7 @@
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
+            transition: background 0.15s;
         }
         .docs-list li:last-child { border-bottom: none; }
         .docs-list a {
@@ -185,7 +232,8 @@
             text-decoration: none;
             font-weight: 500;
             word-break: break-word;
-            transition: color 0.2s;
+            transition: color var(--transition), text-underline-offset var(--transition);
+            text-underline-offset: 2px;
         }
         .docs-list a:hover {
             text-decoration: underline;
@@ -193,23 +241,27 @@
         }
         .docs-list li::before {
             content: "—";
-            margin-left: 0.6rem;
+            margin-left: 0.7rem;
             color: var(--primary);
             font-weight: 400;
+            opacity: 0.7;
         }
+
+        /* ========== STATUS TAGS ========== */
         .missing-required {
             color: var(--danger);
             background: var(--danger-bg);
-            padding: 0.15rem 0.6rem;
+            padding: 0.15rem 0.7rem;
             border-radius: 0.3rem;
             font-weight: 500;
-            display: inline-block;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         .missing-optional {
             color: var(--optional);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
+
+        /* ========== FOOTER ========== */
         .footer-note {
             text-align: center;
             padding: 1.2rem;
@@ -217,27 +269,33 @@
             color: var(--footer-text);
             border-top: 1px solid var(--border);
             background: var(--card-bg);
-            letter-spacing: 0.2px;
+            letter-spacing: 0.3px;
         }
+
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 780px) {
             .grid-2col { grid-template-columns: 1fr; }
+            .profile-header { padding: 1.8rem 1.5rem 1.4rem; }
             .profile-header h1 { font-size: 1.5rem; }
-            .profile-id { gap: 1.2rem; }
         }
         @media (max-width: 500px) {
             body { padding: 0.8rem 0.6rem; }
-            .profile-header { padding: 1.2rem 1rem; }
-            .profile-header h1 { font-size: 1.3rem; }
+            .profile-header { padding: 1.2rem 1rem; flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .profile-header h1 { font-size: 1.35rem; }
+            .profile-id { gap: 1rem; }
             .grid-2col { padding: 1rem; gap: 1rem; }
-            .info-panel { padding: 1rem; }
-            .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.2rem;
-            }
+            .info-panel { padding: 1.1rem; }
+            .info-row { flex-direction: column; align-items: flex-start; gap: 0.2rem; }
             .info-label { min-width: auto; }
             .info-value { text-align: right; }
             .contact-link { width: 100%; justify-content: center; }
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            body { background: #fff; color: #000; }
+            .profile-card { box-shadow: none; border: 1px solid #ccc; }
+            .contact-link { background: none; border: 1px solid #ccc; }
         }
     </style>
 </head>
@@ -245,11 +303,13 @@
 <div class="container">
     <div class="profile-card">
         <div class="profile-header">
-            <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" alt="GuardSystem" style="width: 32px; height: 32px; margin-bottom: 0.5rem; display: block;">
+            <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" alt="GuardSystem" class="logo">
+            <div class="identity">
                 <h1>עידן בן עזרא</h1>
-            <div class="profile-id">
-                <span>תעודת זהות: 201321458</span>
-                <span>הוגש בתאריך: 28/05/2026 21:54:15</span>
+                <div class="profile-id">
+                    <span>תעודת זהות: 201321458</span>
+                    <span>הוגש: 28/05/2026 22:10:35</span>
+                </div>
             </div>
         </div>
         <div class="grid-2col">
@@ -258,7 +318,7 @@
                 <div class="info-row">
                     <span class="info-label">טלפון</span>
                     <span class="info-value">
-                        <a href="tel:052-4543838" class="contact-link">חייג 052-4543838</a>
+                        <a href="tel:052-4543838" class="contact-link">052-4543838</a>
                     </span>
                 </div>
                 <div class="info-row">
@@ -271,14 +331,14 @@
             <div class="info-panel">
                 <h3>התאמה למשרה</h3>
                 <div class="info-row"><span class="info-label">היקף משרה</span><span class="info-value">מלאה</span></div>
-                <div class="info-row"><span class="info-label">זמינות בשבתות</span><span class="info-value">כן</span></div>
+                <div class="info-row"><span class="info-label">זמינות שבתות</span><span class="info-value">כן</span></div>
                 <div class="info-row"><span class="info-label">רישיון נהיגה</span><span class="info-value">כן</span></div>
                 <div class="info-row"><span class="info-label">רכב אישי</span><span class="info-value">כן</span></div>
-                <div class="info-row"><span class="info-label">רישיון נשק ארגוני</span><span class="info-value">כן</span></div>
+                <div class="info-row"><span class="info-label">רישיון נשק</span><span class="info-value">כן</span></div>
                 <div class="info-row"><span class="info-label">הערות</span><span class="info-value"></span></div>
             </div>
             <div class="info-panel">
-                <h3>מסמכים מצורפים</h3>
+                <h3>מסמכים</h3>
                 <ul class="docs-list"><li><a href="https://drive.google.com/file/d/1ZaQQigorduQr2YtjijDzufi40NOH06DN/view?usp=drivesdk" target="_blank">קורות חיים</a></li>
 <li><a href="https://drive.google.com/file/d/1mWrAYYIgG8jvj54K5OpfVN7LFuebQK5w/view?usp=drivesdk" target="_blank">תעודת זהות – צד קדמי</a></li>
 <li><a href="https://drive.google.com/file/d/1ahlBy5wd0E1mKjMvCn0EmJbx4RBAMqP9/view?usp=drivesdk" target="_blank">תעודת שחרור</a></li>
@@ -292,8 +352,4 @@
 </div>
 </body>
 </html>
-
-
-
-
 
