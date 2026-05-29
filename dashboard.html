@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shield – לוח בקרה</title>
+    <link rel="icon" type="image/svg+xml" href="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg?v=20260528">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000;
+            --header-bg: rgba(16,16,20,0.9);
+            --header-border: rgba(255,255,255,0.08);
+            --header-shadow: none;
+            --surface: rgba(28,28,30,0.75);
+            --surface-hover: rgba(28,28,30,0.9);
+            --border: rgba(255,255,255,0.08);
+            --text: #e5e5e7;
+            --text-secondary: #98989d;
+            --accent: #5e9eff;
+            --accent-hover: #7eb4ff;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --header-height: 70px;
+            --green: #22c55e;
+            --yellow: #eab308;
+            --shadow: 0 8px 25px rgba(0,0,0,0.4);
+            --shadow-light: 0 4px 12px rgba(0,0,0,0.2);
+            --stat-icon-bg: rgba(94,158,255,0.1);
+            --row-hover: rgba(255,255,255,0.02);
+            --input-bg: rgba(28,28,30,0.75);
+            --input-border: rgba(255,255,255,0.08);
+            --table-header-bg: rgba(28,28,30,0.95);
+            --scrollbar-thumb: rgba(255,255,255,0.15);
+            --scrollbar-track: transparent;
+            --focus-ring: 0 0 0 3px rgba(94,158,255,0.3);
+            --transition-smooth: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --avatar-bg: #334155;
+        }
+
+        body.light-mode {
+            --bg: #f1f5f9;
+            --header-bg: rgba(255,255,255,0.9);
+            --header-border: #e2e8f0;
+            --header-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            --surface: #ffffff;
+            --surface-hover: #f8fafc;
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --green: #16a34a;
+            --yellow: #ca8a04;
+            --shadow: 0 4px 12px rgba(0,0,0,0.04);
+            --shadow-light: 0 2px 6px rgba(0,0,0,0.02);
+            --stat-icon-bg: rgba(59,130,246,0.08);
+            --row-hover: rgba(0,0,0,0.02);
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --table-header-bg: #f8fafc;
+            --scrollbar-thumb: rgba(0,0,0,0.15);
+            --scrollbar-track: transparent;
+            --focus-ring: 0 0 0 3px rgba(59,130,246,0.2);
+            --avatar-bg: #dbeafe;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
+        *::-webkit-scrollbar { width: 6px; height: 6px; }
+        *::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 3px; }
+        *::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+        *::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+        *::-webkit-scrollbar-corner { background: transparent; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-top: var(--header-height);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background 0.3s, color 0.3s;
+            line-height: 1.4;
+        }
+
+        :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 4px; }
+
+        .shield-header {
+            position: fixed; top:0; left:0; right:0; z-index:100;
+            height: var(--header-height);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
+            background: var(--header-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--header-border);
+            box-shadow: var(--header-shadow);
+            transition: all 0.3s;
+        }
+        .shield-header.scrolled { background: var(--surface); box-shadow: var(--shadow); }
+        .brand { display: flex; align-items: center; gap: 0.5rem; }
+        .brand img { width: 28px; height: 28px; }
+        .brand h1 { font-size: 1.1rem; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+        .brand .subtitle { font-size: 0.75rem; color: var(--text-secondary); font-weight: 400; }
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+        .datetime { font-size: 0.75rem; color: var(--text-secondary); direction: ltr; }
+        .mode-toggle {
+            background: none; border: 1px solid var(--border); border-radius: 50%;
+            width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--text); font-size: 1.1rem; transition: var(--transition-smooth);
+        }
+        .mode-toggle:hover { background: var(--surface-hover); border-color: var(--accent); }
+
+        .dashboard { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.2rem 1rem;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-light);
+            border-top: 3px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform var(--transition-smooth), box-shadow var(--transition-smooth);
+            animation: fadeInCard 0.4s ease both;
+        }
+        .stat-card:nth-child(1) { animation-delay: 0.05s; }
+        .stat-card:nth-child(2) { animation-delay: 0.1s; }
+        .stat-card:nth-child(3) { animation-delay: 0.15s; }
+        .stat-card:nth-child(4) { animation-delay: 0.2s; }
+        @keyframes fadeInCard { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+        .stat-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            background: var(--stat-icon-bg);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .stat-icon .material-icons { font-size: 24px; color: var(--accent); }
+        .stat-content { flex: 1; min-width: 0; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.2rem; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
+        .stat-sub { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.1rem; }
+
+        .controls {
+            display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;
+        }
+        .search-wrapper { position: relative; flex: 1; min-width: 200px; }
+        .search-wrapper .material-icons {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            font-size: 20px; color: var(--text-secondary); pointer-events: none;
+        }
+        .search-input {
+            width: 100%; height: 42px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius-sm);
+            color: var(--text); padding: 0 1rem 0 2.5rem; font-family: var(--font);
+            font-size: 0.9rem; outline: none; transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+        }
+        .search-input:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
+        .filter-select {
+            height: 42px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: var(--radius-sm);
+            color: var(--text); padding: 0 1rem; font-family: var(--font); font-size: 0.9rem;
+            outline: none; min-width: 130px; transition: border-color var(--transition-smooth);
+        }
+        .filter-select:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
+        .btn {
+            height: 42px; background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            padding: 0 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer;
+            transition: all var(--transition-smooth); font-family: var(--font); display: flex; align-items: center; gap: 0.3rem;
+            font-weight: 500; white-space: nowrap;
+        }
+        .btn:disabled { opacity: 0.4; pointer-events: none; }
+        .btn:not(:disabled):hover { background: var(--surface-hover); border-color: var(--accent); transform: translateY(-1px); }
+        .btn:not(:disabled):active { transform: scale(0.97); }
+        .btn-primary { background: var(--accent); color: #fff; border: none; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .results-count { font-size: 0.85rem; color: var(--text-secondary); margin-right: auto; white-space: nowrap; }
+
+        .table-wrapper {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow-x: auto;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-light);
+        }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th {
+            text-align: right; padding: 0.8rem 0.8rem; color: var(--text-secondary); font-weight: 600;
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border);
+            cursor: pointer; user-select: none; transition: color var(--transition-smooth);
+            position: sticky; top: 0; background: var(--table-header-bg); backdrop-filter: blur(20px); z-index: 5;
+        }
+        th:hover { color: var(--text); }
+        th .material-icons { font-size: 16px; vertical-align: middle; opacity: 0.4; margin-right: 0.2rem; }
+        th.sorted .material-icons { opacity: 1; color: var(--accent); }
+        td { padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; white-space: nowrap; transition: background 0.15s; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--row-hover); }
+        tr.selected td { background: rgba(94,158,255,0.08); }
+        .status-cell { display: flex; align-items: center; gap: 0.4rem; }
+        .status-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+        .status-dot.pending { background: var(--yellow); }
+        .status-dot.processed { background: var(--green); }
+        .status-badge { font-size: 0.8rem; font-weight: 500; }
+        .status-pending { color: var(--yellow); }
+        .status-processed { color: var(--green); }
+        .avatar {
+            width: 30px; height: 30px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.85rem; background: var(--avatar-bg); color: var(--text); flex-shrink: 0;
+        }
+        .action-btn {
+            background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            width: 34px; height: 34px; border-radius: 8px; cursor: pointer;
+            transition: all var(--transition-smooth); font-family: var(--font);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .action-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); }
+        .action-btn:active { transform: scale(0.93); }
+        .action-btn .material-icons { font-size: 18px; }
+        .bulk-bar {
+            display: none; align-items: center; justify-content: space-between;
+            background: var(--accent); color: #fff; padding: 0.6rem 1rem; border-radius: var(--radius-sm);
+            margin-bottom: 1rem; font-size: 0.85rem;
+        }
+        .bulk-bar.visible { display: flex; }
+        .bulk-btn {
+            background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: #fff;
+            padding: 0.35rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: var(--transition-smooth);
+            margin-right: 0.5rem; font-family: var(--font);
+        }
+        .bulk-btn:hover { background: rgba(255,255,255,0.35); }
+
+        @media (max-width: 700px) {
+            .shield-header { padding: 0.6rem 1rem; }
+            .dashboard { padding: 1rem; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .controls { flex-direction: column; }
+            .search-wrapper, .filter-select, .btn { width: 100%; }
+            table { min-width: auto; }
+            thead { display: none; }
+            tbody tr {
+                display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+                margin-bottom: 0.8rem; padding: 0.8rem; transition: background 0.15s;
+            }
+            tbody td {
+                display: flex; justify-content: space-between; align-items: center; padding: 0.35rem 0; border: none; white-space: normal;
+            }
+            tbody td::before {
+                content: attr(data-label); font-weight: 600; color: var(--text-secondary); font-size: 0.75rem; text-transform: uppercase; margin-left: 0.5rem;
+            }
+            .action-btn { width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="shield-header" id="shieldHeader">
+        <div class="brand">
+            <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" alt="Shield">
+            <div>
+                <h1>Shield by StrongLight</h1>
+                <div class="subtitle">לוח בקרה</div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span class="datetime" id="liveDateTime"></span>
+            <button class="mode-toggle" id="modeToggle" aria-label="החלף מצב תצוגה">
+                <span class="material-icons">dark_mode</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="stats">
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">people</span></div><div class="stat-content"><div class="stat-label">סה"כ</div><div class="stat-value" id="totalCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">pending_actions</span></div><div class="stat-content"><div class="stat-label">ממתינים</div><div class="stat-value" style="color: var(--yellow);" id="pendingCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">check_circle</span></div><div class="stat-content"><div class="stat-label">טופלו</div><div class="stat-value" style="color: var(--green);" id="doneCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">today</span></div><div class="stat-content"><div class="stat-label">היום</div><div class="stat-value" id="todayCount" data-target="0">0</div></div></div>
+        </div>
+
+        <div class="bulk-bar" id="bulkBar">
+            <span id="bulkSelected">0 נבחרו</span>
+            <div>
+                <button class="bulk-btn" onclick="bulkToggleStatus('TRUE')">סמן כמטופלים</button>
+                <button class="bulk-btn" onclick="bulkToggleStatus('FALSE')">סמן כממתינים</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="search-wrapper">
+                <span class="material-icons">search</span>
+                <input type="text" class="search-input" placeholder="חיפוש לפי שם או ת.ז..." id="searchInput">
+            </div>
+            <select class="filter-select" id="statusFilter">
+                <option value="all">כל הסטטוסים</option>
+                <option value="FALSE">ממתינים</option>
+                <option value="TRUE">טופלו</option>
+            </select>
+            <button class="btn" id="clearBtn" onclick="clearFilters()" disabled>
+                <span class="material-icons" style="font-size:18px;">close</span> נקה
+            </button>
+            <span class="results-count" id="resultsCount">מציג 0 תוצאות</span>
+            <button class="btn" onclick="exportCSV()">
+                <span class="material-icons">download</span> יצוא
+            </button>
+            <button class="btn btn-primary" onclick="fetchData()">
+                <span class="material-icons">refresh</span> רענן
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th style="width:40px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th><th style="width:140px;" onclick="sortTable('submissionDate')" class="sorted"><span class="material-icons">sort</span>תאריך</th><th style="width:190px;" onclick="sortTable('fullName')"><span class="material-icons">sort</span>שם מלא</th><th style="width:120px;" onclick="sortTable('idNumber')"><span class="material-icons">sort</span>ת.ז.</th><th style="width:140px;" onclick="sortTable('phone')"><span class="material-icons">sort</span>טלפון</th><th style="width:110px;" onclick="sortTable('status')"><span class="material-icons">sort</span>סטטוס</th><th style="width:90px;">פעולות</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwUEmK3x6zg4nSf4SHTzzKTPp1ImIH3fsnoAuH7zRP37BKUUnPsMutnx9_ybIwsDXaudQ/exec';
+        let API_KEY = '';
+        let currentData = [];
+        let currentSort = { field: 'submissionDate', asc: false };
+        let selectedRows = new Set();
+        let debounceTimer;
+
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('liveDateTime').textContent = now.toLocaleString('he-IL', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false }).replace(',', '');
+        }
+        updateDateTime(); setInterval(updateDateTime, 1000);
+
+        function relativeTime(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHrs = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHrs / 24);
+            if (diffMins < 1) return "עכשיו";
+            if (diffMins < 60) return `לפני ${diffMins} דק׳`;
+            if (diffHrs < 24) return `לפני ${diffHrs} שע׳`;
+            if (diffDays < 7) return `לפני ${diffDays} ימים`;
+            return date.toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'numeric' });
+        }
+
+        async function login(password) {
+            try {
+                const resp = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'login', password })
+                });
+                const result = await resp.json();
+                if (result.success) {
+                    API_KEY = result.apiKey;
+                    sessionStorage.setItem('shield-dashboard-key', API_KEY);
+                    return true;
+                }
+                return false;
+            } catch { return false; }
+        }
+
+        async function fetchData() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const search = document.getElementById('searchInput').value;
+            let url = `${API_URL}?apiKey=${API_KEY}`;
+            if (statusFilter !== 'all') url += `&status=${statusFilter}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+
+            try {
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.error) {
+                    alert('הגישה נדחתה. נסה להתחבר מחדש.');
+                    sessionStorage.removeItem('shield-dashboard-key');
+                    location.reload();
+                    return;
+                }
+                currentData = data.map(d => ({ ...d, submissionDate: new Date(d.submissionDate) }));
+                renderTable();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function updateStatus(rowIndex, newStatus) {
+            await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ apiKey: API_KEY, rowIndex, newStatus })
+            });
+            fetchData();
+        }
+
+        function renderTable() {
+            let filteredData = [...currentData];
+            if (currentSort.field) {
+                filteredData.sort((a, b) => {
+                    let valA = a[currentSort.field], valB = b[currentSort.field];
+                    if (currentSort.field === 'submissionDate') { valA = a.submissionDate.getTime(); valB = b.submissionDate.getTime(); }
+                    else { valA = (valA||'').toString(); valB = (valB||'').toString(); }
+                    if (valA < valB) return currentSort.asc ? -1 : 1;
+                    if (valA > valB) return currentSort.asc ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            const tbody = document.getElementById('tableBody');
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;">אין תוצאות.</td></tr>';
+            } else {
+                tbody.innerHTML = filteredData.map(row => {
+                    const initials = (row.fullName||'').split(' ').map(w => w[0]).join('').slice(0, 2);
+                    const fullDate = row.submissionDate.toLocaleString('he-IL', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+                    return `
+                    <tr class="${selectedRows.has(row.rowIndex) ? 'selected' : ''}">
+                        <td data-label="בחר"><input type="checkbox" class="row-checkbox" data-id="${row.rowIndex}" ${selectedRows.has(row.rowIndex) ? 'checked' : ''} onchange="toggleRowSelect(${row.rowIndex})"></td>
+                        <td data-label="תאריך">${fullDate}<br><small style="color:var(--text-secondary);">${relativeTime(row.submissionDate)}</small></td>
+                        <td data-label="שם"><div style="display:flex;align-items:center;gap:0.4rem;"><div class="avatar">${initials}</div>${row.fullName}</div></td>
+                        <td data-label="ת.ז.">${row.idNumber}</td>
+                        <td data-label="טלפון">${row.phone}</td>
+                        <td data-label="סטטוס"><div class="status-cell"><span class="status-dot ${row.status==='FALSE'?'pending':'processed'}"></span><span class="status-badge ${row.status==='FALSE'?'status-pending':'status-processed'}">${row.status==='FALSE'?'ממתין':'טופל'}</span></div></td>
+                        <td data-label="פעולות">
+                            ${row.profileUrl ? `<a href="${row.profileUrl}" target="_blank" class="action-btn" title="צפייה בפרופיל"><span class="material-icons">visibility</span></a>` : ''}
+                            <button class="action-btn" title="החלף סטטוס" onclick="toggleStatus(${row.rowIndex})"><span class="material-icons">swap_horiz</span></button>
+                        </td>
+                    </tr>
+                `}).join('');
+            }
+            document.getElementById('resultsCount').textContent = `מציג ${filteredData.length} תוצאות`;
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = currentData.length;
+            const pending = currentData.filter(r => r.status === 'FALSE').length;
+            const done = total - pending;
+            const today = currentData.filter(r => r.submissionDate.toDateString() === new Date().toDateString()).length;
+            animateValue('totalCount', total);
+            animateValue('pendingCount', pending);
+            animateValue('doneCount', done);
+            animateValue('todayCount', today);
+        }
+
+        function animateValue(id, target) {
+            const el = document.getElementById(id);
+            const current = parseInt(el.textContent) || 0;
+            if (current === target) return;
+            const step = Math.ceil((target - current) / 15);
+            let val = current;
+            const timer = setInterval(() => {
+                val += step;
+                if ((step > 0 && val >= target) || (step < 0 && val <= target)) { val = target; clearInterval(timer); }
+                el.textContent = val;
+            }, 40);
+        }
+
+        function toggleStatus(rowIndex) {
+            const row = currentData.find(r => r.rowIndex === rowIndex);
+            if (row) {
+                const newStatus = row.status === 'FALSE' ? 'TRUE' : 'FALSE';
+                updateStatus(rowIndex, newStatus);
+            }
+        }
+
+        function toggleRowSelect(id) {
+            if (selectedRows.has(id)) selectedRows.delete(id); else selectedRows.add(id);
+            renderTable();
+            updateBulkBar();
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            if (selectAll.checked) currentData.forEach(r => selectedRows.add(r.rowIndex));
+            else selectedRows.clear();
+            renderTable();
+        }
+
+        function bulkToggleStatus(newStatus) {
+            selectedRows.forEach(id => updateStatus(id, newStatus));
+            selectedRows.clear();
+            setTimeout(fetchData, 1000);
+        }
+
+        function updateBulkBar() {
+            const bar = document.getElementById('bulkBar');
+            const count = selectedRows.size;
+            document.getElementById('bulkSelected').textContent = `${count} נבחרו`;
+            if (count > 0) bar.classList.add('visible'); else bar.classList.remove('visible');
+        }
+
+        function sortTable(field) {
+            if (currentSort.field === field) currentSort.asc = !currentSort.asc; else { currentSort.field = field; currentSort.asc = true; }
+            renderTable();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('clearBtn').disabled = true;
+            fetchData();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(fetchData, 300);
+            document.getElementById('clearBtn').disabled = !document.getElementById('searchInput').value;
+        });
+        document.getElementById('statusFilter').addEventListener('change', () => {
+            document.getElementById('clearBtn').disabled = false;
+            fetchData();
+        });
+
+        function exportCSV() {
+            const rows = currentData.map(r => [r.submissionDate.toISOString(), r.fullName, r.idNumber, r.phone, r.status]);
+            const csv = [['תאריך','שם','ת.ז.','טלפון','סטטוס'], ...rows].map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'shield_candidates.csv'; a.click();
+        }
+
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+        const modeIcon = modeToggle.querySelector('.material-icons');
+        function setMode(isLight) {
+            if (isLight) { body.classList.add('light-mode'); modeIcon.textContent = 'light_mode'; localStorage.setItem('shield-dashboard-mode', 'light'); }
+            else { body.classList.remove('light-mode'); modeIcon.textContent = 'dark_mode'; localStorage.setItem('shield-dashboard-mode', 'dark'); }
+        }
+        modeToggle.addEventListener('click', () => setMode(!body.classList.contains('light-mode')));
+        const savedMode = localStorage.getItem('shield-dashboard-mode');
+        if (savedMode === 'light') setMode(true); else setMode(false);
+
+        window.addEventListener('scroll', () => document.getElementById('shieldHeader').classList.toggle('scrolled', window.scrollY > 50));
+
+        // התחברות אוטומטית (אם API_KEY נשמר)
+        const savedKey = sessionStorage.getItem('shield-dashboard-key');
+        if (savedKey) {
+            API_KEY = savedKey;
+            fetchData();
+            setInterval(fetchData, 30000);
+        } else {
+            // טופס התחברות פשוט
+            const password = prompt('הזן סיסמה לגישה ללוח הבקרה:');
+            if (password) {
+                login(password).then(success => {
+                    if (success) {
+                        fetchData();
+                        setInterval(fetchData, 30000);
+                    } else {
+                        alert('סיסמה שגויה.');
+                        location.reload();
+                    }
+                });
+            } else {
+                document.body.innerHTML = '<div style="text-align:center;padding:3rem;">נדרשת סיסמה לגישה.</div>';
+            }
+        }
+    </script>
+</body>
+</html>
