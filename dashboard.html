@@ -289,7 +289,16 @@
     </div>
 
     <div class="dashboard">
-        <div class="stats">
+        <div id="loginOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:var(--bg); z-index:200; display:flex; align-items:center; justify-content:center;">
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:2rem; max-width:400px; width:90%; text-align:center;">
+        <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" style="width:40px; margin-bottom:1rem;">
+        <h2 style="margin-bottom:1rem;">גישה ללוח בקרה</h2>
+        <input type="password" id="passwordInput" class="search-input" placeholder="הזן סיסמה" style="margin-bottom:1rem;">
+        <button class="btn btn-primary" onclick="submitLogin()" style="width:100%;">כניסה</button>
+        <p id="loginError" style="color:var(--yellow); margin-top:0.5rem; display:none;">סיסמה שגויה</p>
+    </div>
+</div>
+<div class="stats">
             <div class="stat-card"><div class="stat-icon"><span class="material-icons">people</span></div><div class="stat-content"><div class="stat-label">סה"כ</div><div class="stat-value" id="totalCount" data-target="12">0</div></div></div>
             <div class="stat-card"><div class="stat-icon"><span class="material-icons">pending_actions</span></div><div class="stat-content"><div class="stat-label">ממתינים</div><div class="stat-value" style="color: var(--yellow);" id="pendingCount" data-target="4">0</div></div></div>
             <div class="stat-card"><div class="stat-icon"><span class="material-icons">check_circle</span></div><div class="stat-content"><div class="stat-label">טופלו</div><div class="stat-value" style="color: var(--green);" id="doneCount" data-target="8">0</div></div></div>
