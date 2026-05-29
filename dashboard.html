@@ -1,3 +1,13 @@
+$secureToken = Read-Host "הזן טוקן GitHub תקין (יוסתר)" -AsSecureString
+$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($secureToken)
+$token = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+
+$owner = "StrongLightSys"
+$repo  = "guard-onboarding"
+$headers = @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json" }
+
+# ---------- תוכן הקובץ השלם ----------
+$htmlContent = @'
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -8,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        /* ========== כל הסגנונות מ‑v6 (זהה) ========== */
         :root {
             --bg: #000;
             --header-bg: rgba(16,16,20,0.9);
@@ -39,7 +50,6 @@
             --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --avatar-bg: #334155;
         }
-
         body.light-mode {
             --bg: #f1f5f9;
             --header-bg: rgba(255,255,255,0.9);
@@ -66,16 +76,13 @@
             --focus-ring: 0 0 0 3px rgba(59,130,246,0.2);
             --avatar-bg: #dbeafe;
         }
-
-        /* ====== CUSTOM SCROLLBAR ====== */
+        * { margin:0; padding:0; box-sizing:border-box; }
         * { scrollbar-width: thin; scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track); }
         *::-webkit-scrollbar { width: 6px; height: 6px; }
         *::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 3px; }
         *::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
         *::-webkit-scrollbar-thumb:hover { background: var(--accent); }
         *::-webkit-scrollbar-corner { background: transparent; }
-
-        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: var(--font);
             background: var(--bg);
@@ -87,10 +94,7 @@
             transition: background 0.3s, color 0.3s;
             line-height: 1.4;
         }
-
-        /* ====== FOCUS ====== */
         :focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: 4px; }
-
         .shield-header {
             position: fixed; top:0; left:0; right:0; z-index:100;
             height: var(--header-height);
@@ -116,10 +120,7 @@
             cursor: pointer; color: var(--text); font-size: 1.1rem; transition: var(--transition-smooth);
         }
         .mode-toggle:hover { background: var(--surface-hover); border-color: var(--accent); }
-
         .dashboard { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
-
-        /* ====== STATS ====== */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -157,8 +158,6 @@
         .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.2rem; font-weight: 500; letter-spacing: 0.3px; text-transform: uppercase; }
         .stat-value { font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.1; }
         .stat-sub { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.1rem; }
-
-        /* ====== CONTROLS ====== */
         .controls {
             display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;
         }
@@ -191,8 +190,6 @@
         .btn-primary { background: var(--accent); color: #fff; border: none; }
         .btn-primary:hover { background: var(--accent-hover); }
         .results-count { font-size: 0.85rem; color: var(--text-secondary); margin-right: auto; white-space: nowrap; }
-
-        /* ====== TABLE ====== */
         .table-wrapper {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -248,7 +245,51 @@
         }
         .bulk-btn:hover { background: rgba(255,255,255,0.35); }
 
-        /* ====== MOBILE ====== */
+        /* ====== LOGIN OVERLAY ====== */
+        .login-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0;
+            background: var(--bg);
+            z-index: 300;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(12px);
+            transition: opacity 0.3s;
+        }
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        .login-card img { width: 48px; height: 48px; margin-bottom: 1.5rem; }
+        .login-card h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--text); }
+        .login-card .input-group { margin-bottom: 1rem; text-align: right; }
+        .login-card label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem; }
+        .login-card .password-wrapper { position: relative; }
+        .login-card .password-wrapper input {
+            width: 100%; height: 44px; background: var(--input-bg); border: 1px solid var(--input-border);
+            border-radius: var(--radius-sm); color: var(--text); padding: 0 1rem; font-family: var(--font);
+            font-size: 1rem; outline: none; transition: border-color var(--transition-smooth);
+        }
+        .login-card .password-wrapper input:focus { border-color: var(--accent); box-shadow: var(--focus-ring); }
+        .login-card .login-btn {
+            width: 100%; background: var(--accent); color: #fff; border: none;
+            border-radius: var(--radius-sm); padding: 0.8rem; font-size: 1rem; font-weight: 600;
+            cursor: pointer; margin-top: 1rem; transition: var(--transition-smooth);
+        }
+        .login-card .login-btn:hover { background: var(--accent-hover); }
+        .login-card .error-msg { color: var(--yellow); font-size: 0.85rem; margin-top: 0.8rem; display: none; }
+        .spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%;
+            animation: spin 0.6s linear infinite; margin-left: 0.5rem; vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         @media (max-width: 700px) {
             .shield-header { padding: 0.6rem 1rem; }
             .dashboard { padding: 1rem; }
@@ -285,26 +326,41 @@
             <button class="mode-toggle" id="modeToggle" aria-label="החלף מצב תצוגה">
                 <span class="material-icons">dark_mode</span>
             </button>
+            <button class="btn" id="logoutBtn" style="display:none;" onclick="logout()">
+                <span class="material-icons">logout</span> התנתק
+            </button>
+        </div>
+    </div>
+
+    <!-- ====== LOGIN OVERLAY ====== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" alt="Shield">
+            <h2>גישה ללוח בקרה</h2>
+            <div class="input-group">
+                <label for="passwordInput">סיסמה</label>
+                <div class="password-wrapper">
+                    <input type="password" id="passwordInput" placeholder="הזן סיסמה" autocomplete="current-password">
+                </div>
+            </div>
+            <button class="login-btn" id="loginBtn" onclick="submitLogin()">
+                <span id="loginBtnText">כניסה</span>
+                <span class="spinner" id="loginSpinner" style="display:none;"></span>
+            </button>
+            <p class="error-msg" id="loginError">סיסמה שגויה, נסה שוב.</p>
         </div>
     </div>
 
     <div class="dashboard">
-        <div id="loginOverlay" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:var(--bg); z-index:200; display:flex; align-items:center; justify-content:center;">
-    <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:2rem; max-width:400px; width:90%; text-align:center;">
-        <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" style="width:40px; margin-bottom:1rem;">
-        <h2 style="margin-bottom:1rem;">גישה ללוח בקרה</h2>
-        <input type="password" id="passwordInput" class="search-input" placeholder="הזן סיסמה" style="margin-bottom:1rem;">
-        <button class="btn btn-primary" onclick="submitLogin()" style="width:100%;">כניסה</button>
-        <p id="loginError" style="color:var(--yellow); margin-top:0.5rem; display:none;">סיסמה שגויה</p>
-    </div>
-</div>
-<div class="stats">
-            <div class="stat-card"><div class="stat-icon"><span class="material-icons">people</span></div><div class="stat-content"><div class="stat-label">סה"כ</div><div class="stat-value" id="totalCount" data-target="12">0</div></div></div>
-            <div class="stat-card"><div class="stat-icon"><span class="material-icons">pending_actions</span></div><div class="stat-content"><div class="stat-label">ממתינים</div><div class="stat-value" style="color: var(--yellow);" id="pendingCount" data-target="4">0</div></div></div>
-            <div class="stat-card"><div class="stat-icon"><span class="material-icons">check_circle</span></div><div class="stat-content"><div class="stat-label">טופלו</div><div class="stat-value" style="color: var(--green);" id="doneCount" data-target="8">0</div></div></div>
-            <div class="stat-card"><div class="stat-icon"><span class="material-icons">today</span></div><div class="stat-content"><div class="stat-label">היום</div><div class="stat-value" id="todayCount" data-target="2">0</div></div></div>
+        <!-- כרטיסי סטטיסטיקה -->
+        <div class="stats">
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">people</span></div><div class="stat-content"><div class="stat-label">סה"כ</div><div class="stat-value" id="totalCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">pending_actions</span></div><div class="stat-content"><div class="stat-label">ממתינים</div><div class="stat-value" style="color: var(--yellow);" id="pendingCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">check_circle</span></div><div class="stat-content"><div class="stat-label">טופלו</div><div class="stat-value" style="color: var(--green);" id="doneCount" data-target="0">0</div></div></div>
+            <div class="stat-card"><div class="stat-icon"><span class="material-icons">today</span></div><div class="stat-content"><div class="stat-label">היום</div><div class="stat-value" id="todayCount" data-target="0">0</div></div></div>
         </div>
 
+        <!-- סרגל פעולות בכמות -->
         <div class="bulk-bar" id="bulkBar">
             <span id="bulkSelected">0 נבחרו</span>
             <div>
@@ -313,6 +369,7 @@
             </div>
         </div>
 
+        <!-- סרגל כלים -->
         <div class="controls">
             <div class="search-wrapper">
                 <span class="material-icons">search</span>
@@ -327,14 +384,15 @@
                 <span class="material-icons" style="font-size:18px;">close</span> נקה
             </button>
             <span class="results-count" id="resultsCount">מציג 0 תוצאות</span>
-            <button class="btn" onclick="alert('ייצוא CSV (זמין לאחר חיבור API)')">
+            <button class="btn" onclick="exportCSV()">
                 <span class="material-icons">download</span> יצוא
             </button>
-            <button class="btn btn-primary" onclick="renderTable()">
+            <button class="btn btn-primary" onclick="fetchData()">
                 <span class="material-icons">refresh</span> רענן
             </button>
         </div>
 
+        <!-- טבלה -->
         <div class="table-wrapper">
             <table>
                 <thead><tr><th style="width:40px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th><th style="width:140px;" onclick="sortTable('submissionDate')" class="sorted"><span class="material-icons">sort</span>תאריך</th><th style="width:190px;" onclick="sortTable('fullName')"><span class="material-icons">sort</span>שם מלא</th><th style="width:120px;" onclick="sortTable('idNumber')"><span class="material-icons">sort</span>ת.ז.</th><th style="width:140px;" onclick="sortTable('phone')"><span class="material-icons">sort</span>טלפון</th><th style="width:110px;" onclick="sortTable('status')"><span class="material-icons">sort</span>סטטוס</th><th style="width:90px;">פעולות</th></tr></thead>
@@ -344,21 +402,13 @@
     </div>
 
     <script>
-        const mockData = [
-            { submissionDate: new Date(Date.now() - 30*60000), fullName: "מאור אלמליח", idNumber: "201485992", phone: "050-1111111", status: "FALSE" },
-            { submissionDate: new Date(Date.now() - 55*60000), fullName: "גל חסון", idNumber: "253469258", phone: "050-2222222", status: "TRUE" },
-            { submissionDate: new Date(Date.now() - 70*60000), fullName: "עידן בן עזרא", idNumber: "201321458", phone: "050-3333333", status: "TRUE" },
-            { submissionDate: new Date(Date.now() - 140*60000), fullName: "אור חסון", idNumber: "305449035", phone: "050-1234567", status: "TRUE" },
-            { submissionDate: new Date(Date.now() - 1080*60000), fullName: "ישראל ישראלי", idNumber: "123456789", phone: "050-4444444", status: "FALSE" },
-            { submissionDate: new Date(Date.now() - 1200*60000), fullName: "דני דניאל", idNumber: "987654321", phone: "050-5555555", status: "TRUE" },
-            { submissionDate: new Date(Date.now() - 1440*60000), fullName: "יוסי יוספי", idNumber: "456789123", phone: "050-6666666", status: "FALSE" },
-            { submissionDate: new Date(Date.now() - 1560*60000), fullName: "רונן רונני", idNumber: "321654987", phone: "050-7777777", status: "TRUE" },
-        ];
-
+        const API_URL = 'https://script.google.com/macros/s/AKfycbwUEmK3x6zg4nSf4SHTzzKTPp1ImIH3fsnoAuH7zRP37BKUUnPsMutnx9_ybIwsDXaudQ/exec';
+        let API_KEY = '';
+        let currentData = [];
         let currentSort = { field: 'submissionDate', asc: false };
-        let filteredData = [];
         let selectedRows = new Set();
         let debounceTimer;
+        let inactivityTimer;
 
         function updateDateTime() {
             const now = new Date();
@@ -372,12 +422,173 @@
             const diffMins = Math.floor(diffMs / 60000);
             const diffHrs = Math.floor(diffMins / 60);
             const diffDays = Math.floor(diffHrs / 24);
-
             if (diffMins < 1) return "עכשיו";
             if (diffMins < 60) return `לפני ${diffMins} דק׳`;
             if (diffHrs < 24) return `לפני ${diffHrs} שע׳`;
             if (diffDays < 7) return `לפני ${diffDays} ימים`;
             return date.toLocaleDateString('he-IL', { day:'2-digit', month:'2-digit', year:'numeric' });
+        }
+
+        // ========== AUTH ==========
+        async function login(password) {
+            try {
+                const resp = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'login', password })
+                });
+                const result = await resp.json();
+                if (result.success) {
+                    API_KEY = 'a7f9c2e1-4b6d-8a3f-2c7e9d5b1f0a';
+                    localStorage.setItem('shield-dashboard-token', result.token);
+                    localStorage.setItem('shield-dashboard-token-expiry', Date.now() + result.expiresIn * 1000);
+                    document.getElementById('logoutBtn').style.display = 'flex';
+                    startInactivityTimer();
+                    return true;
+                }
+                return false;
+            } catch { return false; }
+        }
+
+        async function validateToken(token) {
+            try {
+                const resp = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'validateToken', token })
+                });
+                const result = await resp.json();
+                return result.valid;
+            } catch { return false; }
+        }
+
+        async function logout() {
+            const token = localStorage.getItem('shield-dashboard-token');
+            if (token) {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: 'logout', token })
+                });
+            }
+            localStorage.removeItem('shield-dashboard-token');
+            localStorage.removeItem('shield-dashboard-token-expiry');
+            location.reload();
+        }
+
+        function startInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(logout, 5 * 60 * 1000);
+        }
+
+        // ========== LOGIN FORM ==========
+        async function submitLogin() {
+            const passwordInput = document.getElementById('passwordInput');
+            const errorEl = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('loginBtnText');
+            const spinner = document.getElementById('loginSpinner');
+            
+            loginBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            errorEl.style.display = 'none';
+            
+            const success = await login(passwordInput.value);
+            if (success) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'flex';
+                fetchData();
+                setInterval(fetchData, 30000);
+            } else {
+                errorEl.style.display = 'block';
+                loginBtn.disabled = false;
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
+        }
+
+        // Enter key event
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitLogin();
+        });
+
+        // ========== DATA ==========
+        async function fetchData() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const search = document.getElementById('searchInput').value;
+            let url = `${API_URL}?apiKey=${API_KEY}`;
+            if (statusFilter !== 'all') url += `&status=${statusFilter}`;
+            if (search) url += `&search=${encodeURIComponent(search)}`;
+
+            try {
+                const resp = await fetch(url);
+                const data = await resp.json();
+                if (data.error) {
+                    alert('הגישה נדחתה. נסה להתחבר מחדש.');
+                    logout();
+                    return;
+                }
+                currentData = data.map(d => ({ ...d, submissionDate: new Date(d.submissionDate) }));
+                renderTable();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function updateStatus(rowIndex, newStatus) {
+            await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ apiKey: API_KEY, rowIndex, newStatus })
+            });
+            fetchData();
+        }
+
+        function renderTable() {
+            let filteredData = [...currentData];
+            if (currentSort.field) {
+                filteredData.sort((a, b) => {
+                    let valA = a[currentSort.field], valB = b[currentSort.field];
+                    if (currentSort.field === 'submissionDate') { valA = a.submissionDate.getTime(); valB = b.submissionDate.getTime(); }
+                    else { valA = (valA||'').toString(); valB = (valB||'').toString(); }
+                    if (valA < valB) return currentSort.asc ? -1 : 1;
+                    if (valA > valB) return currentSort.asc ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            const tbody = document.getElementById('tableBody');
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;">אין תוצאות.</td></tr>';
+            } else {
+                tbody.innerHTML = filteredData.map(row => {
+                    const initials = (row.fullName||'').split(' ').map(w => w[0]).join('').slice(0, 2);
+                    const fullDate = row.submissionDate.toLocaleString('he-IL', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+                    return `
+                    <tr class="${selectedRows.has(row.rowIndex) ? 'selected' : ''}">
+                        <td data-label="בחר"><input type="checkbox" class="row-checkbox" data-id="${row.rowIndex}" ${selectedRows.has(row.rowIndex) ? 'checked' : ''} onchange="toggleRowSelect(${row.rowIndex})"></td>
+                        <td data-label="תאריך">${fullDate}<br><small style="color:var(--text-secondary);">${relativeTime(row.submissionDate)}</small></td>
+                        <td data-label="שם"><div style="display:flex;align-items:center;gap:0.4rem;"><div class="avatar">${initials}</div>${row.fullName}</div></td>
+                        <td data-label="ת.ז.">${row.idNumber}</td>
+                        <td data-label="טלפון">${row.phone}</td>
+                        <td data-label="סטטוס"><div class="status-cell"><span class="status-dot ${row.status==='FALSE'?'pending':'processed'}"></span><span class="status-badge ${row.status==='FALSE'?'status-pending':'status-processed'}">${row.status==='FALSE'?'ממתין':'טופל'}</span></div></td>
+                        <td data-label="פעולות">
+                            ${row.profileUrl ? `<a href="${row.profileUrl}" target="_blank" class="action-btn" title="צפייה בפרופיל"><span class="material-icons">visibility</span></a>` : ''}
+                            <button class="action-btn" title="החלף סטטוס" onclick="toggleStatus(${row.rowIndex})"><span class="material-icons">swap_horiz</span></button>
+                        </td>
+                    </tr>
+                `}).join('');
+            }
+            document.getElementById('resultsCount').textContent = `מציג ${filteredData.length} תוצאות`;
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = currentData.length;
+            const pending = currentData.filter(r => r.status === 'FALSE').length;
+            const done = total - pending;
+            const today = currentData.filter(r => r.submissionDate.toDateString() === new Date().toDateString()).length;
+            animateValue('totalCount', total);
+            animateValue('pendingCount', pending);
+            animateValue('doneCount', done);
+            animateValue('todayCount', today);
         }
 
         function animateValue(id, target) {
@@ -393,98 +604,31 @@
             }, 40);
         }
 
-        function updateStats() {
-            const total = filteredData.length;
-            const pending = filteredData.filter(r => r.status === 'FALSE').length;
-            const done = total - pending;
-            const today = filteredData.filter(r => r.submissionDate.toDateString() === new Date().toDateString()).length;
-            animateValue('totalCount', total);
-            animateValue('pendingCount', pending);
-            animateValue('doneCount', done);
-            animateValue('todayCount', today);
-        }
-
-        function updateClearButton() {
-            const searchVal = document.getElementById('searchInput').value;
-            const statusVal = document.getElementById('statusFilter').value;
-            const btn = document.getElementById('clearBtn');
-            if (searchVal || statusVal !== 'all') { btn.disabled = false; }
-            else { btn.disabled = true; }
-        }
-
-        function clearFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('statusFilter').value = 'all';
-            updateClearButton();
-            renderTable();
-        }
-
-        function renderTable() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value;
-            filteredData = mockData.filter(row => {
-                const matchSearch = row.fullName.toLowerCase().includes(searchTerm) || row.idNumber.includes(searchTerm);
-                const matchStatus = statusFilter === 'all' || row.status === statusFilter;
-                return matchSearch && matchStatus;
-            });
-
-            if (currentSort.field) {
-                filteredData.sort((a, b) => {
-                    let valA = a[currentSort.field], valB = b[currentSort.field];
-                    if (currentSort.field === 'submissionDate') { valA = a.submissionDate.getTime(); valB = b.submissionDate.getTime(); }
-                    else { valA = valA.toString(); valB = valB.toString(); }
-                    if (valA < valB) return currentSort.asc ? -1 : 1;
-                    if (valA > valB) return currentSort.asc ? 1 : -1;
-                    return 0;
-                });
+        function toggleStatus(rowIndex) {
+            const row = currentData.find(r => r.rowIndex === rowIndex);
+            if (row) {
+                const newStatus = row.status === 'FALSE' ? 'TRUE' : 'FALSE';
+                updateStatus(rowIndex, newStatus);
             }
-
-            const tbody = document.getElementById('tableBody');
-            if (filteredData.length === 0) { tbody.innerHTML = ''; }
-            else {
-                tbody.innerHTML = filteredData.map(row => {
-                    const initials = row.fullName.split(' ').map(w => w[0]).join('').slice(0, 2);
-                    const fullDate = row.submissionDate.toLocaleString('he-IL', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
-                    return `
-                    <tr class="${selectedRows.has(row.idNumber) ? 'selected' : ''}">
-                        <td data-label="בחר"><input type="checkbox" class="row-checkbox" data-id="${row.idNumber}" ${selectedRows.has(row.idNumber) ? 'checked' : ''} onchange="toggleRowSelect('${row.idNumber}')"></td>
-                        <td data-label="תאריך">${fullDate}<br><small style="color:var(--text-secondary);">${relativeTime(row.submissionDate)}</small></td>
-                        <td data-label="שם"><div style="display:flex;align-items:center;gap:0.4rem;"><div class="avatar">${initials}</div>${row.fullName}</div></td>
-                        <td data-label="ת.ז.">${row.idNumber}</td>
-                        <td data-label="טלפון">${row.phone}</td>
-                        <td data-label="סטטוס"><div class="status-cell"><span class="status-dot ${row.status==='FALSE'?'pending':'processed'}"></span><span class="status-badge ${row.status==='FALSE'?'status-pending':'status-processed'}">${row.status==='FALSE'?'ממתין':'טופל'}</span></div></td>
-                        <td data-label="פעולות">
-                            <button class="action-btn" title="צפייה בפרופיל" onclick="alert('צפייה בפרופיל')"><span class="material-icons">visibility</span></button>
-                            <button class="action-btn" title="החלף סטטוס" onclick="toggleStatus('${row.idNumber}')"><span class="material-icons">swap_horiz</span></button>
-                        </td>
-                    </tr>
-                `}).join('');
-            }
-            document.getElementById('resultsCount').textContent = `מציג ${filteredData.length} תוצאות`;
-            updateStats(); updateClearButton(); updateBulkBar();
-        }
-
-        function toggleStatus(id) {
-            const row = mockData.find(r => r.idNumber === id);
-            if (row) { row.status = row.status === 'FALSE' ? 'TRUE' : 'FALSE'; renderTable(); }
         }
 
         function toggleRowSelect(id) {
             if (selectedRows.has(id)) selectedRows.delete(id); else selectedRows.add(id);
-            updateBulkBar();
             renderTable();
+            updateBulkBar();
         }
 
         function toggleSelectAll() {
             const selectAll = document.getElementById('selectAll');
-            if (selectAll.checked) filteredData.forEach(r => selectedRows.add(r.idNumber));
+            if (selectAll.checked) currentData.forEach(r => selectedRows.add(r.rowIndex));
             else selectedRows.clear();
             renderTable();
         }
 
         function bulkToggleStatus(newStatus) {
-            selectedRows.forEach(id => { const row = mockData.find(r => r.idNumber === id); if (row) row.status = newStatus; });
-            selectedRows.clear(); renderTable();
+            selectedRows.forEach(id => updateStatus(id, newStatus));
+            selectedRows.clear();
+            setTimeout(fetchData, 1000);
         }
 
         function updateBulkBar() {
@@ -499,38 +643,92 @@
             renderTable();
         }
 
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = 'all';
+            document.getElementById('clearBtn').disabled = true;
+            fetchData();
+        }
+
         document.getElementById('searchInput').addEventListener('input', () => {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(renderTable, 300);
+            debounceTimer = setTimeout(fetchData, 300);
+            document.getElementById('clearBtn').disabled = !document.getElementById('searchInput').value;
         });
-        document.getElementById('statusFilter').addEventListener('change', renderTable);
+        document.getElementById('statusFilter').addEventListener('change', () => {
+            document.getElementById('clearBtn').disabled = false;
+            fetchData();
+        });
 
+        function exportCSV() {
+            const rows = currentData.map(r => [r.submissionDate.toISOString(), r.fullName, r.idNumber, r.phone, r.status]);
+            const csv = [['תאריך','שם','ת.ז.','טלפון','סטטוס'], ...rows].map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'shield_candidates.csv'; a.click();
+        }
+
+        // ========== MODE ==========
         const modeToggle = document.getElementById('modeToggle');
         const body = document.body;
         const modeIcon = modeToggle.querySelector('.material-icons');
-        
         function setMode(isLight) {
-            if (isLight) {
-                body.classList.add('light-mode');
-                modeIcon.textContent = 'light_mode';
-                localStorage.setItem('shield-dashboard-mode', 'light');
-            } else {
-                body.classList.remove('light-mode');
-                modeIcon.textContent = 'dark_mode';
-                localStorage.setItem('shield-dashboard-mode', 'dark');
-            }
+            if (isLight) { body.classList.add('light-mode'); modeIcon.textContent = 'light_mode'; localStorage.setItem('shield-dashboard-mode', 'light'); }
+            else { body.classList.remove('light-mode'); modeIcon.textContent = 'dark_mode'; localStorage.setItem('shield-dashboard-mode', 'dark'); }
         }
-
-        modeToggle.addEventListener('click', () => {
-            setMode(!body.classList.contains('light-mode'));
-        });
-
+        modeToggle.addEventListener('click', () => setMode(!body.classList.contains('light-mode')));
         const savedMode = localStorage.getItem('shield-dashboard-mode');
-        if (savedMode === 'light') setMode(true);
-        else setMode(false);
+        if (savedMode === 'light') setMode(true); else setMode(false);
 
-        renderTable();
         window.addEventListener('scroll', () => document.getElementById('shieldHeader').classList.toggle('scrolled', window.scrollY > 50));
+
+        // ========== INIT ==========
+        (async function() {
+            const savedToken = localStorage.getItem('shield-dashboard-token');
+            const expiry = parseInt(localStorage.getItem('shield-dashboard-token-expiry') || '0');
+
+            if (savedToken && Date.now() < expiry) {
+                const valid = await validateToken(savedToken);
+                if (valid) {
+                    API_KEY = 'a7f9c2e1-4b6d-8a3f-2c7e9d5b1f0a';
+                    document.getElementById('logoutBtn').style.display = 'flex';
+                    document.getElementById('loginOverlay').style.display = 'none';
+                    startInactivityTimer();
+                    fetchData();
+                    setInterval(fetchData, 30000);
+                    return;
+                }
+            }
+            // השאר את חלון ההתחברות גלוי
+            document.getElementById('loginOverlay').style.display = 'flex';
+        })();
+
+        // ========== INACTIVITY ==========
+        ['mousemove', 'keydown', 'scroll', 'click'].forEach(evt => {
+            window.addEventListener(evt, startInactivityTimer, { passive: true });
+        });
     </script>
 </body>
 </html>
+'@
+
+# קידוד והעלאה
+$base64Content = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($htmlContent))
+$apiUrl = "https://api.github.com/repos/$owner/$repo/contents/dashboard.html"
+
+try {
+    $existing = Invoke-RestMethod -Uri $apiUrl -Headers $headers -Method Get
+    $sha = $existing.sha
+} catch {
+    $sha = $null
+}
+
+$body = @{
+    message = "Final login overlay + Enter support"
+    content = $base64Content
+    branch  = "main"
+}
+if ($sha) { $body.sha = $sha }
+
+Invoke-RestMethod -Uri $apiUrl -Method Put -Headers $headers -Body ($body | ConvertTo-Json -Compress) -ContentType "application/json"
+Write-Host "✅ dashboard.html עודכן – חלון התחברות מושלם." -ForegroundColor Green
