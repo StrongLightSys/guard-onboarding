@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מעקב מועמדות – Shield</title>
+    <link rel="icon" type="image/svg+xml" href="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f7fa;
+            --card-bg: #ffffff;
+            --text: #1a1f2b;
+            --text-secondary: #5a6273;
+            --border: #e2e5ec;
+            --primary: #1e3b5c;
+            --radius: 1rem;
+            --shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0d0f14;
+                --card-bg: #161920;
+                --text: #e2e5ec;
+                --text-secondary: #a0a7b6;
+                --border: #2a2e3b;
+                --primary: #7ea4c5;
+            }
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Heebo', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            direction: rtl;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .track-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            padding: 2.5rem 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+        .track-card img {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+        }
+        .track-card h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1.8rem;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: #eef2ff;
+            color: #4338ca;
+        }
+        .updated {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .error {
+            color: #dc2626;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="track-card" id="app">
+        <img src="https://StrongLightSys.github.io/guard-onboarding/images/shield-logo.svg" alt="Shield">
+        <h2>מעקב מועמדות</h2>
+        <div id="content"><p>טוען...</p></div>
+    </div>
+    <script>
+        const TRACK_API = 'https://script.google.com/macros/s/AKfycbwUEmK3x6zg4nSf4SHTzzKTPp1ImIH3fsnoAuH7zRP37BKUUnPsMutnx9_ybIwsDXaudQ/exec?action=track&id=';
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        function render(status, updated) {
+            document.getElementById('content').innerHTML = `
+                <div class="status-badge">${status}</div>
+                ${updated ? `<div class="updated">עודכן: ${updated}</div>` : ''}
+            `;
+        }
+
+        function showError(msg) {
+            document.getElementById('content').innerHTML = `<p class="error">${msg}</p>`;
+        }
+
+        if (!id) {
+            showError('חסר מזהה מעקב. אנא ודא שהקישור תקין.');
+        } else {
+            const cacheKey = 'shield_track_' + id;
+            const cached = localStorage.getItem(cacheKey);
+            if (cached) {
+                try {
+                    const data = JSON.parse(cached);
+                    render(data.status, data.lastUpdated);
+                } catch(e) {}
+            }
+
+            fetch(TRACK_API + encodeURIComponent(id))
+                .then(r => r.json())
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+                    localStorage.setItem(cacheKey, JSON.stringify(data));
+                    render(data.status, data.lastUpdated);
+                })
+                .catch(err => {
+                    if (!cached) {
+                        showError('לא ניתן לטעון את הסטטוס כרגע. נסה שוב מאוחר יותר.');
+                    }
+                });
+        }
+    </script>
+</body>
+</html>
