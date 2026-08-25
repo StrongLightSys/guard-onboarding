@@ -14,29 +14,29 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      background: #0f172a; /* רקע כהה – מונע מסגרת לבנה */
+      overflow: auto;           /* מאפשר גלילה אם צריך */
+      background: #0f172a;      /* רקע כהה למניעת מסגרת לבנה */
     }
 
     iframe {
-      position: fixed;
+      position: absolute;       /* במקום fixed – נמנע בעיות גובה */
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      height: 100dvh; /* גובה דינמי – פותר חיתוך בנייד */
       border: none;
       display: block;
-      background: #ffffff; /* רקע לבן כמו הדף הפנימי – מונע פס לבן */
-      overflow-y: auto;
+      background: #ffffff;      /* רקע לבן כמו תוכן הדף */
+      overflow-y: auto;         /* גלילה פנימית */
       -webkit-overflow-scrolling: touch;
     }
   </style>
 </head>
-<body style="height:100%; margin:0;">
+<body>
   <iframe
     src="https://script.google.com/macros/s/AKfycbx5emxKmxRjlnRdxFnr4NsaHdki5iyYL5H66aURyxOugcmNDlx6aksLq4VKjMg_aZJTOQ/exec"
-    allow="fullscreen"
+    scrolling="yes"
+    allow="fullscreen; autoplay"
     title="Guard Onboarding">
   </iframe>
 </body>
