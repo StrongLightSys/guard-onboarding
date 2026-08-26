@@ -14,46 +14,34 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: auto;
-      background: #0f172a; /* רקע כהה – מונע מסגרת לבנה */
+      overflow: hidden;
+      background: #0f172a;           /* רקע כהה קבוע */
+      overscroll-behavior: none;      /* מבטל חשיפת רקע לבן בקצוות */
+      -webkit-overflow-scrolling: touch;
     }
 
     iframe {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
+      height: 100dvh;                /* גובה דינמי – מונע רווחים */
       border: none;
       display: block;
-      background: #ffffff; /* לבן – תואם לתוכן הדף */
-      overflow: hidden;
+      background: #ffffff;            /* לבן רק בתוך תוכן הטופס */
+      overflow-y: auto;               /* גלילה פנימית בלבד */
+      overscroll-behavior: contain;   /* מונע גלילת יתר פנימית */
+      -webkit-overflow-scrolling: touch;
     }
   </style>
 </head>
 <body>
   <iframe
-    id="appFrame"
     src="https://script.google.com/macros/s/AKfycbzkEsuUv1ThIy6rC5xGynwXWezE4Llueid4eECZ7g0HxTrr3Na37n5GtDBzWY6P2z9NwQ/exec"
-    scrolling="no"
+    scrolling="auto"
     allow="fullscreen"
     title="Guard Onboarding">
   </iframe>
-
-  <script>
-    (function() {
-      var frame = document.getElementById('appFrame');
-
-      function setFrameHeight(height) {
-        frame.style.height = height + 'px';
-      }
-
-      // מאזין להודעות מהדף הפנימי
-      window.addEventListener('message', function(event) {
-        if (event.data && event.data.type === 'setHeight') {
-          setFrameHeight(event.data.height);
-        }
-      });
-
-      // ברירת מחדל עד שמתקבל גובה
-      setFrameHeight(window.innerHeight);
-    })();
-  </script>
 </body>
 </html>
