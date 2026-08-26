@@ -4,10 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Guard Onboarding</title>
-  <script>
-    window.location.replace("https://script.google.com/macros/s/AKfycbx5emxKmxRjlnRdxFnr4NsaHdki5iyYL5H66aURyxOugcmNDlx6aksLq4VKjMg_aZJTOQ/exec");
-  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: #0f172a; /* רקע כהה – מונע מסגרת לבנה */
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      background: #ffffff; /* לבן – תואם לתוכן הדף */
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body style="margin:0; background:#0f172a;">
+<body>
+  <iframe
+    id="appFrame"
+    src="https://script.google.com/macros/s/AKfycbzkEsuUv1ThIy6rC5xGynwXWezE4Llueid4eECZ7g0HxTrr3Na37n5GtDBzWY6P2z9NwQ/exec"
+    scrolling="no"
+    allow="fullscreen"
+    title="Guard Onboarding">
+  </iframe>
+
+  <script>
+    (function() {
+      var frame = document.getElementById('appFrame');
+
+      function setFrameHeight(height) {
+        frame.style.height = height + 'px';
+      }
+
+      // מאזין להודעות מהדף הפנימי
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'setHeight') {
+          setFrameHeight(event.data.height);
+        }
+      });
+
+      // ברירת מחדל עד שמתקבל גובה
+      setFrameHeight(window.innerHeight);
+    })();
+  </script>
 </body>
 </html>
