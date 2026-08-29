@@ -3,35 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0f172a">
   <title>Guard Onboarding</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #0f172a;           /* רקע כהה קבוע */
-      overscroll-behavior: none;      /* מבטל חשיפת רקע לבן בקצוות */
+      background: #0f172a;          /* רקע כהה – מונע פסים לבנים */
+      overscroll-behavior: none;
       -webkit-overflow-scrolling: touch;
     }
-
     iframe {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      height: 100dvh;                /* גובה דינמי – מונע רווחים */
+      height: 100dvh;               /* גובה מלא דינמי – מבטיח כיסוי */
       border: none;
       display: block;
-      background: #ffffff;            /* לבן רק בתוך תוכן הטופס */
-      overflow-y: auto;               /* גלילה פנימית בלבד */
-      overscroll-behavior: contain;   /* מונע גלילת יתר פנימית */
+      background: #0f172a;          /* לא לבן – רקע כהה */
+      overflow-y: auto;
+      overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
     }
   </style>
